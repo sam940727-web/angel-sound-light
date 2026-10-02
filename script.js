@@ -28,7 +28,7 @@ const navbar = document.getElementById('navbar');
 const backToTop = document.getElementById('backToTop');
 const progressBar = document.getElementById('progressBar');
 const heroBgWrap = document.getElementById('heroBgWrap');
-const parallaxImgs = document.querySelectorAll('.service-img, .gallery-item img');
+const parallaxImgs = document.querySelectorAll('.service-img, .gallery-item img, .singer-float img');
 
 backToTop.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -123,7 +123,7 @@ const lightboxImg = document.getElementById('lightboxImg');
 const lightboxCaption = document.getElementById('lightboxCaption');
 const lightboxClose = document.getElementById('lightboxClose');
 
-document.querySelectorAll('.gallery-item').forEach(item => {
+document.querySelectorAll('.gallery-item, .singer-card').forEach(item => {
   item.addEventListener('click', (e) => {
     e.preventDefault();
     const img = item.querySelector('img');

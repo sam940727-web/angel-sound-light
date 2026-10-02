@@ -71,7 +71,11 @@ a{text-decoration:none;color:inherit;}
   padding:12px 24px;
 }
 .logo{display:flex;align-items:center;gap:10px;}
-.logo-icon{color:var(--gold);font-size:1.6rem;}
+.logo-img{
+  width:42px;height:42px;border-radius:50%;object-fit:cover;
+  box-shadow:0 0 12px rgba(212,175,55,0.5);
+  border:1px solid rgba(212,175,55,0.5);
+}
 .logo-text{display:flex;flex-direction:column;line-height:1.2;}
 .logo-cn{font-weight:700;font-size:1.1rem;color:var(--gold-light);}
 .logo-en{font-size:0.65rem;letter-spacing:1px;color:var(--text-muted);}
@@ -151,14 +155,16 @@ a{text-decoration:none;color:inherit;}
   position:relative;z-index:2;padding:0 20px;max-width:800px;
   animation:fadeUp 1.1s ease both;
 }
-.hero-icon{
-  font-size:2.2rem;color:var(--gold);display:block;margin-bottom:14px;
-  animation:spinPulse 6s linear infinite;
+.hero-logo{
+  width:110px;height:110px;border-radius:50%;object-fit:cover;
+  margin-bottom:18px;
+  border:2px solid rgba(212,175,55,0.6);
+  box-shadow:0 0 35px rgba(212,175,55,0.5), 0 0 70px rgba(59,29,92,0.4);
+  animation:floatLogo 4s ease-in-out infinite;
 }
-@keyframes spinPulse{
-  0%{transform:rotate(0deg) scale(1);}
-  50%{transform:rotate(180deg) scale(1.2);}
-  100%{transform:rotate(360deg) scale(1);}
+@keyframes floatLogo{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-12px);}
 }
 .hero h1{
   font-size:3.2rem;color:var(--gold-light);
@@ -259,7 +265,59 @@ section{padding:90px 20px;}
 .service-card h3{color:var(--gold-light);font-size:1.15rem;margin-bottom:10px;padding:0 20px;}
 .service-card p{color:var(--text-muted);font-size:0.92rem;padding:0 22px;}
 
-/* About */
+/* Singers carousel */
+.singers{background:linear-gradient(160deg,#15152b,#1a1030 60%,#15152b);overflow:hidden;}
+.singers-carousel{
+  overflow:hidden;
+  mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image:linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.singers-track{
+  display:flex;gap:26px;width:max-content;
+  animation:slideTrack 48s linear infinite;
+}
+.singers-carousel:hover .singers-track{animation-play-state:paused;}
+@keyframes slideTrack{
+  from{transform:translateX(0);}
+  to{transform:translateX(-50%);}
+}
+.singer-card{
+  position:relative;flex:0 0 auto;width:220px;aspect-ratio:3/4;
+  border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  border:1px solid rgba(212,175,55,0.3);
+  box-shadow:0 8px 20px rgba(0,0,0,0.35);
+  transition:transform .4s ease, box-shadow .4s ease, border-color .4s ease;
+}
+.singer-card:hover{
+  transform:scale(1.07) translateY(-8px);
+  border-color:var(--gold);
+  box-shadow:0 20px 40px rgba(212,175,55,0.3);
+  z-index:5;
+}
+.singer-float{
+  width:100%;height:100%;position:relative;
+  animation:singerBob 3.6s ease-in-out infinite;
+}
+.singer-card:nth-child(odd) .singer-float{animation-delay:.3s;}
+.singer-card:nth-child(3n) .singer-float{animation-delay:.9s;}
+@keyframes singerBob{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+.singer-float img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:brightness(0.92);transition:filter .4s ease;
+}
+.singer-card:hover .singer-float img{filter:brightness(1.05);}
+.singer-overlay{
+  position:absolute;left:0;right:0;bottom:0;
+  padding:10px 14px;text-align:center;
+  background:linear-gradient(180deg, transparent, rgba(13,13,23,0.92));
+  color:var(--gold-light);font-weight:700;font-size:0.85rem;letter-spacing:1px;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .35s ease, transform .35s ease;
+}
+.singer-card:hover .singer-overlay{opacity:1;transform:translateY(0);}
 .about{background:linear-gradient(160deg,#1a1030,#0d0d17);}
 .about-content{max-width:850px;margin:0 auto;text-align:center;}
 .about h2{font-size:2.2rem;color:var(--gold-light);margin-bottom:22px;}
@@ -410,3 +468,28 @@ section{padding:90px 20px;}
 }
 .back-to-top.show{opacity:1;visibility:visible;transform:translateY(0);}
 .back-to-top:hover{transform:translateY(-4px) scale(1.05);}
+
+/* WhatsApp floating button */
+.whatsapp-float{
+  position:fixed;left:26px;bottom:26px;z-index:90;
+  width:54px;height:54px;border-radius:50%;
+  background:#25d366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px rgba(0,0,0,0.4);
+  transition:transform .3s;
+}
+.whatsapp-float::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:#25d366;opacity:0.6;
+  animation:wa-pulse 2.2s ease-out infinite;
+  z-index:-1;
+}
+@keyframes wa-pulse{
+  0%{transform:scale(1);opacity:0.6;}
+  100%{transform:scale(1.8);opacity:0;}
+}
+.whatsapp-float:hover{transform:translateY(-4px) scale(1.08);}
+
+/* Contact links */
+.contact-link{color:var(--gold-light);font-weight:600;transition:color .3s;}
+.contact-link:hover{color:var(--gold);text-decoration:underline;}
