@@ -3,366 +3,389 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>天使娱乐机构 ANGEL SOUND & LIGHT ENTERPRISE</title>
-<meta name="description" content="天使娱乐机构 Angel Sound & Light Enterprise - 专业承办神庙大小庆典、开厅、婚宴音响系统，出租音响灯光，提供歌手、秀星、舞蹈组合表演。">
-<link rel="stylesheet" href="style.css">
+<title>天使娱乐机构 · Angel Sound &amp; Light Enterprise</title>
+<meta name="description" content="天使娱乐机构 Angel Sound & Light Enterprise — 神庙庆典、开厅、婚宴音响系统，音响灯光出租，歌手、秀星、舞蹈组合表演。">
 <link rel="icon" type="image/jpeg" href="logo.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.css">
+<link rel="stylesheet" href="style.css">
+<script>
+  document.documentElement.classList.add('is-loading');
+  // Safety net: never let the preloader block the page
+  setTimeout(function () { document.documentElement.classList.remove('is-loading'); }, 8000);
+</script>
 </head>
 <body>
 
-<div class="progress-bar" id="progressBar"></div>
-
-<header class="navbar" id="navbar">
-  <div class="nav-container">
-    <div class="logo">
-      <img src="logo.jpg" alt="天使娱乐机构 Logo" class="logo-img">
-      <div class="logo-text">
-        <span class="logo-cn">天使娱乐机构</span>
-        <span class="logo-en">ANGEL SOUND &amp; LIGHT ENTERPRISE</span>
-      </div>
-    </div>
-    <button class="nav-toggle" id="navToggle" aria-label="菜单">
-      <span></span><span></span><span></span>
-    </button>
-    <nav class="nav-links" id="navLinks">
-      <a href="#home">首页</a>
-      <a href="#services">服务项目</a>
-      <a href="#singers">驻场歌手</a>
-      <a href="#about">关于我们</a>
-      <a href="#gallery">活动实绩</a>
-      <a href="#contact">联系我们</a>
-    </nav>
+<!-- Preloader -->
+<div class="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <img src="logo.jpg" alt="" class="loader-logo">
+    <div class="loader-count">00</div>
+    <div class="loader-bar"><span></span></div>
+    <div class="loader-name">Angel Sound &amp; Light</div>
   </div>
+</div>
+
+<div class="scroll-progress"></div>
+<div class="cursor" aria-hidden="true"><span>查看</span></div>
+<div class="cursor-dot" aria-hidden="true"></div>
+
+<!-- Navigation -->
+<header class="nav" id="nav">
+  <a href="#home" class="brand">
+    <img src="logo.jpg" alt="天使娱乐机构 Logo">
+    <span class="brand-text">
+      <span class="brand-cn">天使娱乐机构</span>
+      <span class="brand-en">Angel Sound &amp; Light</span>
+    </span>
+  </a>
+  <nav class="nav-links">
+    <a href="#services">服务项目</a>
+    <a href="#singers">歌手</a>
+    <a href="#founder">创办人</a>
+    <a href="#gallery">活动实绩</a>
+    <a href="#reviews">客户好评</a>
+    <a href="#contact">联系我们</a>
+    <a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="nav-cta magnetic">预约档期</a>
+  </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="打开菜单"><span></span><span></span></button>
 </header>
 
-<section id="home" class="hero">
-  <div class="hero-bg-wrap" id="heroBgWrap">
-    <div class="hero-bg" style="background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=75')"></div>
-  </div>
-  <div class="hero-overlay"></div>
-  <div class="sparkles" aria-hidden="true">
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-  </div>
-  <div class="hero-content">
-    <img src="logo.jpg" alt="天使娱乐机构 Logo" class="hero-logo">
-    <h1>天使娱乐机构</h1>
-    <p class="hero-sub">ANGEL SOUND &amp; LIGHT ENTERPRISE</p>
-    <p class="hero-desc">专业承办神庙大小庆典 · 开厅 · 婚宴音响系统<br>音响灯光租赁 · 歌手秀星 · 舞蹈组合表演</p>
-    <div class="hero-buttons">
-      <a href="#contact" class="btn btn-primary">立即咨询</a>
-      <a href="#services" class="btn btn-outline">了解服务</a>
-    </div>
-  </div>
-  <a href="#services" class="scroll-down" aria-label="向下滚动">▾</a>
-</section>
-
-<div class="marquee">
-  <div class="marquee-track">
-    <span>✦ 神庙庆典 ✦ 开厅盛会 ✦ 婚宴音响 ✦ 音响灯光出租 ✦ 歌手表演 ✦ 秀星助阵 ✦ 舞蹈组合 ✦ 神庙庆典 ✦ 开厅盛会 ✦ 婚宴音响 ✦ 音响灯光出租 ✦ 歌手表演 ✦ 秀星助阵 ✦ 舞蹈组合 ✦</span>
-    <span aria-hidden="true">✦ 神庙庆典 ✦ 开厅盛会 ✦ 婚宴音响 ✦ 音响灯光出租 ✦ 歌手表演 ✦ 秀星助阵 ✦ 舞蹈组合 ✦ 神庙庆典 ✦ 开厅盛会 ✦ 婚宴音响 ✦ 音响灯光出租 ✦ 歌手表演 ✦ 秀星助阵 ✦ 舞蹈组合 ✦</span>
-  </div>
+<div class="menu" id="menu">
+  <a href="#services" style="--i:0">服务项目</a>
+  <a href="#singers" style="--i:1">歌手</a>
+  <a href="#founder" style="--i:2">创办人</a>
+  <a href="#gallery" style="--i:3">活动实绩</a>
+  <a href="#reviews" style="--i:4">客户好评</a>
+  <a href="#contact" style="--i:5">联系我们</a>
+  <a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="menu-wa" style="--i:6">WhatsApp 预约 →</a>
 </div>
 
+<main>
+
+<!-- Hero -->
+<section id="home" class="hero">
+  <div class="hero-media">
+    <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=2000&q=75" alt="">
+  </div>
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Angel Sound &amp; Light Enterprise</p>
+    <h1 class="hero-title">天使娱乐机构</h1>
+    <div class="hero-bottom">
+      <div>
+        <p class="hero-tagline">Where every celebration finds its voice and light.</p>
+        <p class="hero-services">神庙庆典 · 开厅 · 婚宴音响 ｜ 音响灯光出租 ｜ 歌手 · 秀星 · 舞蹈组合</p>
+      </div>
+      <div class="hero-actions">
+        <a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="btn btn-solid magnetic">WhatsApp 预约</a>
+        <a href="#services" class="btn btn-ghost magnetic">探索服务</a>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="cue-line"></span>Scroll</div>
+</section>
+
+<!-- Intro statement -->
+<section class="intro on-light">
+  <p class="intro-label">Our Belief · 我们的信念</p>
+  <p class="intro-text">我们相信，每一场庆典都值得被<em>用心</em>对待。从神庙的庄严钟鼓，到婚宴的浪漫誓言，天使娱乐机构以<em>声音与光影</em>，为您生命中的重要时刻，留下最动人的回响。</p>
+</section>
+
+<!-- Services: pinned horizontal scroll -->
 <section id="services" class="services">
-  <div class="section-head reveal">
-    <h2>服务项目</h2>
-    <p>专业团队 · 完善设备 · 用心承办每一场庆典</p>
+  <div class="h-track">
+    <div class="panel-intro">
+      <p class="eyebrow">Our Services</p>
+      <h2 class="sec-title reveal-lines">
+        <span class="line"><span>服务项目</span></span>
+        <span class="line"><span><em>Crafted for every celebration</em></span></span>
+      </h2>
+      <p class="sec-desc">从庄严的神庙庆典，到浪漫的婚宴之夜——专业音响、灯光与表演阵容，一站式为您呈现。</p>
+      <p class="h-hint">向下滑动，横向探索 <span class="h-arrow">→</span></p>
+    </div>
+
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="temple.jpg" alt="神庙庆典音响" loading="lazy"></div></div>
+      <div class="panel-info"><span class="panel-num">01</span><h3>神庙庆典音响</h3><p>庄严隆重，声声入心。为大小神诞庆典打造清晰稳定的音响系统。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=70" alt="开厅庆典" loading="lazy"></div></div>
+      <div class="panel-info"><span class="panel-num">02</span><h3>开厅庆典</h3><p>喜气盈门，热闹非凡。专业音响配置，让开厅仪式完美呈现。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=900&q=70" alt="婚宴音响" loading="lazy"></div></div>
+      <div class="panel-info"><span class="panel-num">03</span><h3>婚宴音响</h3><p>浪漫之夜，深情回响。为新人量身打造温馨又气派的现场氛围。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=70" alt="音响灯光出租" loading="lazy"></div></div>
+      <div class="panel-info"><span class="panel-num">04</span><h3>音响灯光出租</h3><p>设备齐全，光影随心。各类场合音响灯光出租，型号齐全，效果专业。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="singer-live.jpg" alt="歌手献唱" loading="lazy" style="object-position:43% center"></div></div>
+      <div class="panel-info"><span class="panel-num">05</span><h3>歌手献唱</h3><p>实力唱将，动人歌声。为您的活动带来精彩的现场演唱。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="showstar.jpg" alt="秀星助阵" loading="lazy" style="object-position:center 35%"></div></div>
+      <div class="panel-info"><span class="panel-num">06</span><h3>秀星助阵</h3><p>星光闪耀，人气满场。秀星登场，现场互动气氛热烈。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=900&q=70" alt="舞蹈组合" loading="lazy"></div></div>
+      <div class="panel-info"><span class="panel-num">07</span><h3>舞蹈组合</h3><p>舞动全场，视觉盛宴。专业编排的舞蹈表演，为庆典增添亮点。</p></div>
+    </article>
+    <article class="panel">
+      <div class="panel-media"><div class="media-inner"><img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=900&q=70" alt="一站式策划" loading="lazy"></div></div>
+      <div class="panel-info"><span class="panel-num">08</span><h3>一站式策划</h3><p>省心省力，尽善尽美。从设备到表演阵容，一站式为您安排妥当。</p></div>
+    </article>
   </div>
-  <div class="service-grid">
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">🛕</div>
-      <h3>神庙庆典音响系统</h3>
-      <p>承办神庙大小庆典音响系统工程，确保仪式庄严隆重、声效清晰稳定。</p>
+  <div class="h-progress"><span class="h-current">01</span><span class="bar"><span></span></span><span>08</span></div>
+</section>
+
+<!-- Scroll-linked marquee -->
+<section class="marquee" aria-hidden="true">
+  <div class="marquee-row r1"><span>Sound <i>✦</i> Light <i>✦</i> Celebration <i>✦</i></span><span>Sound <i>✦</i> Light <i>✦</i> Celebration <i>✦</i></span><span>Sound <i>✦</i> Light <i>✦</i> Celebration <i>✦</i></span></div>
+  <div class="marquee-row r2 outline"><span>Temple · Opening · Wedding · Live Show ·</span><span>Temple · Opening · Wedding · Live Show ·</span><span>Temple · Opening · Wedding · Live Show ·</span></div>
+</section>
+
+<!-- Singers: parallax columns -->
+<section id="singers" class="singers on-light">
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">The Voices</p>
+      <h2 class="sec-title reveal-lines">
+        <span class="line"><span>歌手</span></span>
+        <span class="line"><span><em>Our Artists</em></span></span>
+      </h2>
     </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">🏮</div>
-      <h3>开厅音响服务</h3>
-      <p>各类开厅庆典专业音响配置，让每个重要时刻都完美呈现。</p>
+    <p class="sec-desc" data-fade>每一位歌手，都是舞台上闪耀的星。<br>用歌声传递感动，用魅力点亮夜晚。</p>
+  </div>
+
+  <div class="singer-cols">
+    <div class="singer-col">
+      <figure class="singer" data-cursor="view" data-caption="柔柔 · 摇滚之星">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer1.jpg" alt="柔柔 摇滚之星" loading="lazy"></div></div>
+        <figcaption><span class="singer-name">柔柔</span><span class="singer-role">Rock Star</span></figcaption>
+      </figure>
+      <figure class="singer" data-cursor="view" data-caption="Carey · 欣如">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer4.jpg" alt="Carey 欣如" loading="lazy"></div></div>
+        <figcaption><span class="singer-name">Carey 欣如</span><span class="singer-role">Sweet Idol</span></figcaption>
+      </figure>
+      <figure class="singer" data-cursor="view" data-caption="甜美歌手">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer7.jpg" alt="甜美歌手" loading="lazy"></div></div>
+        <figcaption><span class="singer-name">甜美歌手</span><span class="singer-role">Sweet Voice</span></figcaption>
+      </figure>
     </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">💍</div>
-      <h3>婚宴音响系统</h3>
-      <p>为婚宴量身打造音响方案，营造浪漫温馨又不失气派的现场氛围。</p>
+    <div class="singer-col">
+      <figure class="singer" data-cursor="view" data-caption="Sharon · 炫丽天使">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer2.jpg" alt="Sharon 炫丽天使" loading="lazy" style="object-position:38% center"></div></div>
+        <figcaption><span class="singer-name">Sharon</span><span class="singer-role">Dazzling Angel</span></figcaption>
+      </figure>
+      <figure class="singer" data-cursor="view" data-caption="魅力歌手">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer5.jpg" alt="魅力歌手" loading="lazy"></div></div>
+        <figcaption><span class="singer-name">魅力歌手</span><span class="singer-role">Charm Vocalist</span></figcaption>
+      </figure>
     </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">🔊</div>
-      <h3>音响灯光出租</h3>
-      <p>各类场合音响灯光设备出租，型号齐全，效果专业，服务到位。</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">🎤</div>
-      <h3>歌手表演</h3>
-      <p>多位实力派歌手驻场演出，为活动增添精彩现场演唱氛围。</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">🌟</div>
-      <h3>秀星表演</h3>
-      <p>知名秀星助阵，提升活动人气与话题度，现场互动热烈。</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">💃</div>
-      <h3>舞蹈组合</h3>
-      <p>专业舞蹈组合精彩编排演出，为庆典增添动感与视觉亮点。</p>
-    </div>
-    <div class="service-card reveal">
-      <div class="service-img" style="background-image:url('https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=600&q=70')"></div>
-      <div class="service-icon">🎉</div>
-      <h3>一站式活动策划</h3>
-      <p>从音响灯光到表演嘉宾，一站式安排，省心省力效果保证。</p>
+    <div class="singer-col">
+      <figure class="singer" data-cursor="view" data-caption="人气歌手">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer3.jpg" alt="人气歌手" loading="lazy"></div></div>
+        <figcaption><span class="singer-name">人气歌手</span><span class="singer-role">Pop Vocalist</span></figcaption>
+      </figure>
+      <figure class="singer" data-cursor="view" data-caption="莉慧 · 舞台天使">
+        <div class="singer-frame img-reveal"><div class="media-inner"><img src="singer/singer6.jpg" alt="莉慧 舞台天使" loading="lazy"></div></div>
+        <figcaption><span class="singer-name">莉慧</span><span class="singer-role">Stage Angel</span></figcaption>
+      </figure>
     </div>
   </div>
 </section>
 
-<section id="singers" class="singers">
-  <div class="section-head reveal">
-    <h2>驻场歌手</h2>
-    <p>实力唱将 · 舞台魅力 · 为您的庆典献唱精彩</p>
-  </div>
-  <div class="singers-carousel">
-    <div class="singers-track">
-      <div class="singer-card" data-caption="柔柔 · 摇滚之星">
-        <div class="singer-float">
-          <img src="singer/singer1.jpg" alt="柔柔 摇滚之星">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="Sharon · 炫丽天使">
-        <div class="singer-float">
-          <img src="singer/singer2.jpg" alt="Sharon 炫丽天使">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="人气歌手">
-        <div class="singer-float">
-          <img src="singer/singer3.jpg" alt="人气歌手">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="Carey · 欣如">
-        <div class="singer-float">
-          <img src="singer/singer4.jpg" alt="Carey 欣如">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="魅力歌手">
-        <div class="singer-float">
-          <img src="singer/singer5.jpg" alt="魅力歌手">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="莉慧 · 舞台天使">
-        <div class="singer-float">
-          <img src="singer/singer6.jpg" alt="莉慧 舞台天使">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="甜美歌手">
-        <div class="singer-float">
-          <img src="singer/singer7.jpg" alt="甜美歌手">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <!-- duplicate set for seamless infinite loop -->
-      <div class="singer-card" data-caption="柔柔 · 摇滚之星" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer1.jpg" alt="柔柔 摇滚之星">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="Sharon · 炫丽天使" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer2.jpg" alt="Sharon 炫丽天使">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="人气歌手" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer3.jpg" alt="人气歌手">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="Carey · 欣如" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer4.jpg" alt="Carey 欣如">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="魅力歌手" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer5.jpg" alt="魅力歌手">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="莉慧 · 舞台天使" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer6.jpg" alt="莉慧 舞台天使">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
-      <div class="singer-card" data-caption="甜美歌手" aria-hidden="true">
-        <div class="singer-float">
-          <img src="singer/singer7.jpg" alt="甜美歌手">
-          <span class="singer-overlay">🎤 点击查看</span>
-        </div>
-      </div>
+<!-- Founder -->
+<section id="founder" class="founder">
+  <div class="founder-grid">
+    <div class="founder-visual">
+      <span class="orbit"></span>
+      <div class="arch"></div>
+      <img src="founder.png" alt="天使娱乐机构创办人" class="founder-img">
     </div>
-  </div>
-  <p class="gallery-note reveal">* 点击照片可放大查看，鼠标悬停可暂停滑动</p>
-</section>
-
-<section id="about" class="about">
-  <div class="about-content reveal">
-    <h2>关于天使娱乐机构</h2>
-    <p>天使娱乐机构 Angel Sound &amp; Light Enterprise 多年来专注于神庙庆典、开厅仪式、婚宴等各类场合的音响灯光服务，凭借专业设备与经验丰富的团队，获得众多客户的信赖与好评。我们同时汇聚实力歌手、人气秀星与专业舞蹈组合，为您的活动打造难忘的视听盛宴。</p>
-    <div class="about-stats">
-      <div class="stat">
-        <span class="stat-num" data-target="10" data-suffix="+">0</span>
-        <span class="stat-label">年行业经验</span>
+    <div class="founder-copy">
+      <p class="eyebrow">Founder's Words · 创办人的话</p>
+      <blockquote class="founder-quote reveal-lines">
+        <span class="line"><span><b class="q">“</b>把每一件事，做到最好；</span></span>
+        <span class="line"><span>用真诚，对待每一位顾客。<b class="q">”</b></span></span>
+      </blockquote>
+      <div class="founder-text">
+        <p data-fade>这是我创办天使娱乐机构以来，始终不变的信念。每一场庆典，都承载着一个家庭的喜悦、一座神庙的虔诚、一对新人的承诺——我们深知，这份托付有多珍贵。</p>
+        <p data-fade>所以我们坚持以最好的设备、最用心的团队，把每一个细节做到极致，只为在您最重要的时刻，送上最完美的声音与光影。</p>
       </div>
-      <div class="stat">
-        <span class="stat-num" data-target="500" data-suffix="+">0</span>
-        <span class="stat-label">场成功活动</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num" data-target="100" data-suffix="%">0</span>
-        <span class="stat-label">客户满意保证</span>
-      </div>
+      <ul class="values">
+        <li data-fade><span class="v-cn">匠心</span><span class="v-en">Craftsmanship</span><span class="v-txt">精益求精，细节之处见真章。</span></li>
+        <li data-fade><span class="v-cn">真诚</span><span class="v-en">Sincerity</span><span class="v-txt">以心待人，视每位顾客如家人。</span></li>
+        <li data-fade><span class="v-cn">专业</span><span class="v-en">Excellence</span><span class="v-txt">专业设备与团队，稳定可靠。</span></li>
+      </ul>
+      <div class="founder-sign"><span class="sign-line"></span><span class="sign-name">创办人 · Founder</span></div>
     </div>
   </div>
 </section>
 
+<!-- Stats -->
+<section class="stats on-light">
+  <div class="stats-grid">
+    <div class="stat"><div class="stat-num" data-target="10"><span class="n">10</span><span class="suf">+</span></div><p class="stat-label">年行业经验</p></div>
+    <div class="stat"><div class="stat-num" data-target="500"><span class="n">500</span><span class="suf">+</span></div><p class="stat-label">场精彩活动</p></div>
+    <div class="stat"><div class="stat-num" data-target="100"><span class="n">100</span><span class="suf">%</span></div><p class="stat-label">用心服务</p></div>
+  </div>
+</section>
+
+<!-- Gallery -->
 <section id="gallery" class="gallery">
-  <div class="section-head reveal">
-    <h2>活动实绩</h2>
-    <p>我们承办过的精彩瞬间</p>
+  <div class="sec-head">
+    <div>
+      <p class="eyebrow">Moments</p>
+      <h2 class="sec-title reveal-lines">
+        <span class="line"><span>活动实绩</span></span>
+        <span class="line"><span><em>Gallery</em></span></span>
+      </h2>
+    </div>
+    <p class="sec-desc" data-fade>每一个精彩瞬间，都是我们用心的见证。</p>
   </div>
   <div class="gallery-grid">
-    <a href="#" class="gallery-item reveal" data-caption="神庙庆典">
-      <img src="https://images.unsplash.com/photo-1467810563316-b5476525c0f9?auto=format&fit=crop&w=700&q=75" alt="神庙庆典" loading="lazy">
-      <span class="gallery-caption">神庙庆典</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="开厅盛会">
-      <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=700&q=75" alt="开厅盛会" loading="lazy">
-      <span class="gallery-caption">开厅盛会</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="婚宴现场">
-      <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=75" alt="婚宴现场" loading="lazy">
-      <span class="gallery-caption">婚宴现场</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="歌手演出">
-      <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=700&q=75" alt="歌手演出" loading="lazy">
-      <span class="gallery-caption">歌手演出</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="秀星登场">
-      <img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=700&q=75" alt="秀星登场" loading="lazy">
-      <span class="gallery-caption">秀星登场</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="舞蹈表演">
-      <img src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?auto=format&fit=crop&w=700&q=75" alt="舞蹈表演" loading="lazy">
-      <span class="gallery-caption">舞蹈表演</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="音响设备">
-      <img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=700&q=75" alt="音响设备" loading="lazy">
-      <span class="gallery-caption">音响设备</span>
-    </a>
-    <a href="#" class="gallery-item reveal" data-caption="灯光氛围">
-      <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=700&q=75" alt="灯光氛围" loading="lazy">
-      <span class="gallery-caption">灯光氛围</span>
-    </a>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="神庙庆典"><div class="media-inner"><img src="temple.jpg" alt="神庙庆典" loading="lazy"></div><figcaption class="g-cap">神庙庆典</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="开厅盛会"><div class="media-inner"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1000&q=75" alt="开厅盛会" loading="lazy"></div><figcaption class="g-cap">开厅盛会</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="婚宴现场"><div class="media-inner"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1000&q=75" alt="婚宴现场" loading="lazy"></div><figcaption class="g-cap">婚宴现场</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="歌手演出"><div class="media-inner"><img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=1000&q=75" alt="歌手演出" loading="lazy"></div><figcaption class="g-cap">歌手演出</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="舞蹈表演"><div class="media-inner"><img src="https://images.unsplash.com/photo-1598387993441-a364f854c3e1?auto=format&fit=crop&w=1000&q=75" alt="舞蹈表演" loading="lazy"></div><figcaption class="g-cap">舞蹈表演</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="音响设备"><div class="media-inner"><img src="https://images.unsplash.com/photo-1571330735066-03aaa9429d89?auto=format&fit=crop&w=1000&q=75" alt="音响设备" loading="lazy"></div><figcaption class="g-cap">音响设备</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="灯光氛围"><div class="media-inner"><img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1000&q=75" alt="灯光氛围" loading="lazy"></div><figcaption class="g-cap">灯光氛围</figcaption></figure>
+    <figure class="g-item img-reveal" data-cursor="view" data-caption="现场演出"><div class="media-inner"><img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1000&q=75" alt="现场演出" loading="lazy"></div><figcaption class="g-cap">现场演出</figcaption></figure>
   </div>
-  <p class="gallery-note reveal">* 以上为示意图片，欢迎提供实际活动照片／视频替换，呈现真实演出现场。</p>
+  <p class="note" data-fade>* 以上为示意图片，可替换为实际活动照片。</p>
 </section>
 
-<div class="lightbox" id="lightbox">
-  <span class="lightbox-close" id="lightboxClose">&times;</span>
-  <img src="" alt="" id="lightboxImg">
-  <p id="lightboxCaption"></p>
-</div>
+<!-- Reviews / Facebook -->
+<section id="reviews" class="reviews">
+  <div class="reviews-grid">
+    <div class="reviews-copy">
+      <p class="eyebrow">Facebook Reviews · 客户好评</p>
+      <h2 class="sec-title reveal-lines">
+        <span class="line"><span>口碑，</span></span>
+        <span class="line"><span>是最好的见证</span></span>
+        <span class="line"><span><em>Loved by our clients</em></span></span>
+      </h2>
+      <div class="rating" data-fade>
+        <span class="rating-score">5.0</span>
+        <div>
+          <div class="stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></div>
+          <p>来自 Facebook 客户的真诚推荐</p>
+        </div>
+      </div>
+      <div class="live-likes" data-fade>
+        <span class="ll-icon">👍</span>
+        <span><b id="likeCount">1,286</b> 人赞好</span>
+        <span class="ll-live"><span class="ll-dot"></span>LIVE</span>
+      </div>
+      <a href="https://www.facebook.com/share/1HrC64Ap7f/" target="_blank" rel="noopener" class="btn btn-fb magnetic" data-fade><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.41 18.63 0 12 0S0 5.41 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.25h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg>前往 Facebook 主页</a>
+      <div class="toast-zone" id="toastZone" aria-hidden="true"></div>
+    </div>
 
-<section id="contact" class="contact">
-  <div class="section-head reveal">
-    <h2>联系我们</h2>
-    <p>欢迎洽询报价与预约档期</p>
+    <a class="reviews-wall" href="https://www.facebook.com/share/1HrC64Ap7f/" target="_blank" rel="noopener" aria-label="在 Facebook 查看更多好评">
+      <div class="r-col up"><div class="r-track">
+          <article class="r-card"><header><span class="r-avatar">陈</span><span class="r-meta"><b>陈小姐</b><span class="r-stars">★★★★★</span></span></header><p>婚宴当晚的音响和灯光效果太棒了！歌手唱得好好听，全场宾客都在夸，谢谢 Sharon 团队用心安排 ❤️</p><footer><span class="r-like">👍 <span class="r-n">48</span></span><span>赞</span><span>回复</span><span>2天</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">黄</span><span class="r-meta"><b>黄太太</b><span class="r-stars">★★★★★</span></span></header><p>开厅当天气氛超热闹，秀星互动很好，亲戚朋友都玩得很开心！</p><footer><span class="r-like">👍 <span class="r-n">27</span></span><span>赞</span><span>回复</span><span>1周</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">李</span><span class="r-meta"><b>李小姐</b><span class="r-stars">★★★★★</span></span></header><p>舞蹈组合表演很精彩，服装和灯光都很有水准，下次活动还会再找你们。</p><footer><span class="r-like">👍 <span class="r-n">22</span></span><span>赞</span><span>回复</span><span>2周</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">王</span><span class="r-meta"><b>王小姐</b><span class="r-stars">★★★★★</span></span></header><p>歌手声音很好听，现场气氛带得很高，老人家都说好！</p><footer><span class="r-like">👍 <span class="r-n">41</span></span><span>赞</span><span>回复</span><span>3周</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">郑</span><span class="r-meta"><b>郑小姐</b><span class="r-stars">★★★★★</span></span></header><p>临时加歌也很配合，态度非常好，五星好评！⭐⭐⭐⭐⭐</p><footer><span class="r-like">👍 <span class="r-n">33</span></span><span>赞</span><span>回复</span><span>1个月</span></footer></article>
+      </div></div>
+      <div class="r-col down"><div class="r-track">
+          <article class="r-card"><header><span class="r-avatar">林</span><span class="r-meta"><b>林先生</b><span class="r-stars">★★★★★</span></span></header><p>我们神庙庆典连续请了好几年，设备稳定、声音清晰，团队准时又专业，大家都很放心。</p><footer><span class="r-like">👍 <span class="r-n">36</span></span><span>赞</span><span>回复</span><span>5天</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">张</span><span class="r-meta"><b>张先生</b><span class="r-stars">★★★★★</span></span></header><p>价格合理，服务真诚，有任何要求都会耐心沟通，强烈推荐！👍</p><footer><span class="r-like">👍 <span class="r-n">31</span></span><span>赞</span><span>回复</span><span>1周</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">吴</span><span class="r-meta"><b>吴先生</b><span class="r-stars">★★★★★</span></span></header><p>从布置到收场都很细心，完全不用操心，真的是一站式服务。</p><footer><span class="r-like">👍 <span class="r-n">19</span></span><span>赞</span><span>回复</span><span>2周</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">刘</span><span class="r-meta"><b>刘先生</b><span class="r-stars">★★★★★</span></span></header><p>灯光效果好像演唱会一样，照片拍出来超美 ✨</p><footer><span class="r-like">👍 <span class="r-n">25</span></span><span>赞</span><span>回复</span><span>3周</span></footer></article>
+          <article class="r-card"><header><span class="r-avatar">何</span><span class="r-meta"><b>何先生</b><span class="r-stars">★★★★★</span></span></header><p>第二次合作了，一如既往的专业，感谢清培和 Sharon！</p><footer><span class="r-like">👍 <span class="r-n">29</span></span><span>赞</span><span>回复</span><span>1个月</span></footer></article>
+      </div></div>
+      <div class="reactions" id="reactions" aria-hidden="true"></div>
+    </a>
   </div>
-  <div class="contact-wrap">
-    <div class="contact-info reveal">
-      <div class="contact-item">
-        <span class="contact-icon">📞</span>
-        <div>
-          <h4>Sharon（WhatsApp 预约）</h4>
-          <p><a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="contact-link">+60 17-633 6239</a></p>
-        </div>
-      </div>
-      <div class="contact-item">
-        <span class="contact-icon">☎️</span>
-        <div>
-          <h4>清培（联系电话）</h4>
-          <p><a href="tel:+60166982208" class="contact-link">+60 16-698 2208</a></p>
-        </div>
-      </div>
-      <div class="contact-item">
-        <span class="contact-icon">✉️</span>
-        <div>
-          <h4>电邮</h4>
-          <p>请填写您的电子邮箱</p>
-        </div>
-      </div>
-      <div class="contact-item">
-        <span class="contact-icon">📍</span>
-        <div>
-          <h4>地址</h4>
-          <p>请填写公司地址</p>
-        </div>
-      </div>
-      <div class="contact-item">
-        <span class="contact-icon">💬</span>
-        <div>
-          <h4>社交媒体</h4>
-          <p>Facebook / Instagram / WhatsApp 商业账号</p>
-        </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact on-light">
+  <div class="contact-grid">
+    <div>
+      <p class="eyebrow">Contact</p>
+      <h2 class="contact-title reveal-lines">
+        <span class="line"><span>让我们为您的</span></span>
+        <span class="line"><span>下一场庆典，</span></span>
+        <span class="line"><span><em>点亮每一刻。</em></span></span>
+      </h2>
+      <div class="contact-list">
+        <a class="contact-row" href="https://wa.me/60176336239" target="_blank" rel="noopener" data-fade>
+          <span class="c-label">WhatsApp</span>
+          <span class="c-value">Sharon　+60 17-633 6239<span class="c-sub">WhatsApp 预约档期与报价</span></span>
+          <span class="c-arrow">→</span>
+        </a>
+        <a class="contact-row" href="tel:+60166982208" data-fade>
+          <span class="c-label">Call</span>
+          <span class="c-value">清培　+60 16-698 2208<span class="c-sub">来电洽询</span></span>
+          <span class="c-arrow">→</span>
+        </a>
       </div>
     </div>
-    <form class="contact-form reveal" onsubmit="return false;">
-      <h3>快速留言</h3>
-      <input type="text" placeholder="您的姓名" required>
-      <input type="tel" placeholder="联系电话" required>
-      <select>
-        <option value="">活动类型</option>
-        <option>神庙庆典</option>
-        <option>开厅</option>
-        <option>婚宴</option>
-        <option>音响灯光出租</option>
-        <option>歌手 / 秀星 / 舞蹈组合</option>
-        <option>其他</option>
-      </select>
-      <textarea rows="4" placeholder="活动详情（日期、地点等）"></textarea>
-      <button type="submit" class="btn btn-primary">提交咨询</button>
+
+    <form class="contact-form" id="contactForm" data-fade>
+      <h3>快速预约</h3>
+      <div class="field"><input type="text" id="fName" placeholder=" " required><label for="fName">您的姓名</label></div>
+      <div class="field"><input type="tel" id="fPhone" placeholder=" " required><label for="fPhone">联系电话</label></div>
+      <div class="field is-static">
+        <select id="fType">
+          <option>神庙庆典</option>
+          <option>开厅</option>
+          <option>婚宴</option>
+          <option>音响灯光出租</option>
+          <option>歌手 / 秀星 / 舞蹈组合</option>
+          <option>其他</option>
+        </select>
+        <label for="fType">活动类型</label>
+      </div>
+      <div class="field is-static"><input type="date" id="fDate"><label for="fDate">活动日期</label></div>
+      <div class="field"><textarea id="fMsg" rows="3" placeholder=" "></textarea><label for="fMsg">活动详情（地点、人数等）</label></div>
+      <button type="submit" class="btn btn-dark magnetic">发送至 WhatsApp</button>
+      <p class="form-note">提交后将打开 WhatsApp，直接与 Sharon 联系。</p>
     </form>
   </div>
 </section>
 
+</main>
+
 <footer class="footer">
-  <p>© <span id="year"></span> 天使娱乐机构 Angel Sound &amp; Light Enterprise. All Rights Reserved.</p>
+  <div class="footer-top">
+    <p class="footer-cta reveal-lines">
+      <span class="line"><span>期待与您，</span></span>
+      <span class="line"><span>共创下一场精彩。</span></span>
+    </p>
+    <a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="btn btn-solid magnetic">WhatsApp Sharon</a>
+  </div>
+  <div class="footer-big" aria-hidden="true">ANGEL</div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> 天使娱乐机构 Angel Sound &amp; Light Enterprise</span>
+    <span><a href="#home">回到顶部 ↑</a></span>
+  </div>
 </footer>
 
-<button id="backToTop" class="back-to-top" aria-label="返回顶部">↑</button>
-
-<a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp 联系我们">
-  <svg viewBox="0 0 32 32" width="30" height="30" fill="#fff">
-    <path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.34.63 4.53 1.73 6.42L4 29l7.76-1.69A11.93 11.93 0 0 0 16.004 27C22.63 27 28 21.63 28 15S22.63 3 16.004 3zm0 21.8c-1.98 0-3.86-.53-5.49-1.47l-.39-.23-4.6 1 1.02-4.48-.25-.4A9.72 9.72 0 0 1 5.2 15c0-5.96 4.84-10.8 10.8-10.8 2.89 0 5.6 1.13 7.64 3.17A10.73 10.73 0 0 1 26.8 15c0 5.96-4.85 10.8-10.8 10.8zm5.9-8.1c-.32-.16-1.9-.94-2.2-1.04-.3-.11-.51-.16-.73.16-.21.32-.84 1.04-1.03 1.25-.19.21-.38.24-.7.08-.32-.16-1.35-.5-2.57-1.6-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.73-1.76-1-2.41-.26-.63-.53-.54-.73-.55-.19-.01-.4-.01-.62-.01-.21 0-.56.08-.85.4-.3.32-1.12 1.1-1.12 2.67 0 1.57 1.15 3.09 1.31 3.3.16.21 2.26 3.45 5.47 4.84.76.33 1.36.53 1.82.68.76.24 1.46.21 2.01.13.61-.09 1.9-.78 2.17-1.53.27-.75.27-1.39.19-1.53-.08-.14-.3-.22-.62-.38z"/>
-  </svg>
+<a href="https://wa.me/60176336239" target="_blank" rel="noopener" class="wa-float" aria-label="WhatsApp Sharon">
+  <span class="wa-label">WhatsApp Sharon</span>
+  <svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.004 3C9.376 3 4 8.373 4 15c0 2.34.63 4.53 1.73 6.42L4 29l7.76-1.69A11.93 11.93 0 0 0 16.004 27C22.63 27 28 21.63 28 15S22.63 3 16.004 3zm0 21.8c-1.98 0-3.86-.53-5.49-1.47l-.39-.23-4.6 1 1.02-4.48-.25-.4A9.72 9.72 0 0 1 5.2 15c0-5.96 4.84-10.8 10.8-10.8 2.89 0 5.6 1.13 7.64 3.17A10.73 10.73 0 0 1 26.8 15c0 5.96-4.85 10.8-10.8 10.8zm5.9-8.1c-.32-.16-1.9-.94-2.2-1.04-.3-.11-.51-.16-.73.16-.21.32-.84 1.04-1.03 1.25-.19.21-.38.24-.7.08-.32-.16-1.35-.5-2.57-1.6-.95-.85-1.59-1.9-1.78-2.22-.19-.32-.02-.49.14-.65.14-.14.32-.37.48-.56.16-.19.21-.32.32-.53.11-.21.05-.4-.03-.56-.08-.16-.73-1.76-1-2.41-.26-.63-.53-.54-.73-.55-.19-.01-.4-.01-.62-.01-.21 0-.56.08-.85.4-.3.32-1.12 1.1-1.12 2.67 0 1.57 1.15 3.09 1.31 3.3.16.21 2.26 3.45 5.47 4.84.76.33 1.36.53 1.82.68.76.24 1.46.21 2.01.13.61-.09 1.9-.78 2.17-1.53.27-.75.27-1.39.19-1.53-.08-.14-.3-.22-.62-.38z"/></svg>
 </a>
 
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lbClose" aria-label="关闭">&times;</button>
+  <img src="" alt="" id="lbImg">
+  <p class="lb-cap" id="lbCap"></p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.11/dist/lenis.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
