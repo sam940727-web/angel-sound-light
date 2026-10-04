@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>建立新宴会竞标 · Angel Sound &amp; Light</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/jpeg" href="../logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bid.css">
+<style>
+  .pin-display-row{display:flex;align-items:center;justify-content:center;gap:14px;margin:6px 0 2px}
+  .pin-display-row .big-pin{font-family:var(--serif-en);font-size:2.2rem;letter-spacing:.2em;color:var(--champagne-2)}
+  .field{margin-bottom:20px}
+  .field label{display:block;font-size:.85rem;color:var(--muted);letter-spacing:.1em;margin-bottom:8px}
+  .field input[type=text],.field input[type=number]{
+    width:100%;padding:13px 16px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(244,239,230,.04);color:var(--ivory);font-size:1rem;outline:none;
+  }
+  .field input:focus{border-color:var(--champagne)}
+  h2.section-title{font-size:1.05rem;letter-spacing:.1em;color:var(--champagne-2);margin:34px 0 16px;padding-top:20px;border-top:1px solid var(--line)}
+  .item-block{
+    display:grid;grid-template-columns:96px 1fr auto;gap:14px;align-items:center;
+    background:rgba(244,239,230,.03);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px;
+  }
+  .item-thumb{
+    width:96px;height:96px;border-radius:8px;background:#0003 center/cover no-repeat;border:1px dashed var(--line);
+    display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.75rem;cursor:pointer;overflow:hidden;text-align:center;
+  }
+  .item-fields{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .item-fields input{
+    width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:rgba(244,239,230,.04);color:var(--ivory);outline:none;font-size:.92rem;
+  }
+  .item-fields input:focus{border-color:var(--champagne)}
+  .item-remove{
+    width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);
+    cursor:pointer;font-size:1rem;align-self:start;
+  }
+  .item-remove:hover{border-color:#d9534f;color:#ff8a80}
+  .add-item-btn{width:100%;padding:14px;border-radius:10px;border:1px dashed var(--line);background:transparent;color:var(--muted);cursor:pointer;margin-bottom:20px}
+  .add-item-btn:hover{border-color:var(--champagne);color:var(--champagne-2)}
+  .submit-row{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:10px}
+  .progress-wrap{width:100%;height:6px;border-radius:100px;background:rgba(244,239,230,.08);overflow:hidden;display:none}
+  .progress-wrap span{display:block;height:100%;width:0;background:var(--champagne);transition:width .3s}
+  .err-msg{color:#ff8a80;font-size:.86rem;text-align:center;min-height:1.3em}
+
+  .success-screen{display:none;text-align:center;padding:40px 20px}
+  .success-screen.show{display:block}
+  .success-pin{font-family:var(--serif-en);font-size:clamp(2.6rem,9vw,4rem);letter-spacing:.2em;color:var(--champagne-2);margin:18px 0}
+  .success-links{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:24px}
+  .success-links .btn{width:min(320px,80vw)}
+</style>
+</head>
+<body>
+
+<!-- password gate -->
+<div class="pin-gate pw-gate" id="pwGate">
+  <img src="../logo.jpg" alt="" class="logo">
+  <h1>建立新宴会竞标</h1>
+  <p class="sub">此页面仅供天使娱乐机构工作人员使用，请输入管理密码。</p>
+  <form id="pwForm" style="display:flex;flex-direction:column;gap:14px;align-items:center">
+    <input type="password" id="pwInput" placeholder="管理密码" autocomplete="off">
+    <button class="btn btn-solid" type="submit">进入</button>
+  </form>
+  <p class="pin-error" id="pwError"></p>
+</div>
+
+<!-- setup form -->
+<div class="hidden" id="app">
+  <header class="topbar">
+    <div class="brand"><img src="../logo.jpg" alt=""> <span>建立新宴会竞标</span></div>
+  </header>
+
+  <main class="wrap">
+    <div id="formScreen">
+      <div class="field">
+        <label>宴会名称（例如：陈先生婚宴 / XX 庙 2026 春季庆典）</label>
+        <input type="text" id="eventName" placeholder="输入宴会名称">
+      </div>
+
+      <div class="field">
+        <label>宴会 PIN 码（6 位数字，用于控制台与大屏幕登入）</label>
+        <div class="pin-display-row">
+          <span class="big-pin" id="pinDisplay">------</span>
+          <button type="button" class="btn btn-ghost" id="reshufflePin">🔀 重新生成</button>
+        </div>
+      </div>
+
+      <h2 class="section-title">竞标物品（有几张照片，就有几样物品）</h2>
+      <div id="itemsList"></div>
+      <button type="button" class="add-item-btn" id="addItemBtn">＋ 添加一样物品</button>
+
+      <div class="submit-row">
+        <button type="button" class="btn btn-solid" id="submitBtn" style="width:100%">创建宴会竞标</button>
+        <div class="progress-wrap" id="progressWrap"><span id="progressBar"></span></div>
+        <p class="err-msg" id="submitError"></p>
+      </div>
+    </div>
+
+    <div class="success-screen" id="successScreen">
+      <p class="sub" style="color:var(--muted)">宴会竞标已建立！这是这场宴会的 PIN 码：</p>
+      <div class="success-pin" id="successPin">------</div>
+      <p class="sub" style="color:var(--muted)">司仪 / 工作人员与大屏幕，都用这组 PIN 码登入。</p>
+      <div class="success-links">
+        <a class="btn btn-solid" id="openControlLink" target="_blank" rel="noopener">打开控制台（司仪用手机/电脑）→</a>
+        <a class="btn btn-ghost" id="openDisplayLink" target="_blank" rel="noopener">打开大屏幕显示页 →</a>
+        <button class="btn btn-ghost" id="createAnotherBtn" type="button">再建立一场新宴会</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-init.js"></script>
+<script src="bid-common.js"></script>
+<script src="setup.js"></script>
+</body>
+</html>

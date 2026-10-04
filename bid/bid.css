@@ -1,0 +1,95 @@
+/* ============================================================
+   Angel Sound & Light — 竞标系统共用样式
+   ============================================================ */
+:root{
+  --ink:#0c0b0a;
+  --ink-2:#17140f;
+  --ivory:#f4efe6;
+  --champagne:#c8a86b;
+  --champagne-2:#e2cc9b;
+  --bronze:#8a7244;
+  --muted:#9b948a;
+  --line:rgba(200,168,107,.25);
+  --green:#3fae6a;
+  --red:#d9534f;
+  --serif-cn:'Noto Serif SC','Songti SC',serif;
+  --serif-en:'Cormorant Garamond','Times New Roman',serif;
+  --sans:'Noto Sans SC','Helvetica Neue',Arial,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:radial-gradient(ellipse at 20% 0%,rgba(200,168,107,.12),transparent 55%),var(--ink);
+  color:var(--ivory);font-family:var(--sans);font-weight:300;line-height:1.7;
+  -webkit-font-smoothing:antialiased;min-height:100%;
+}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3{font-family:var(--serif-cn);font-weight:600;letter-spacing:.04em}
+.em{font-family:var(--serif-en);font-style:italic;color:var(--champagne)}
+
+.wrap{max-width:720px;margin:0 auto;padding:clamp(20px,5vw,40px)}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:16px clamp(16px,4vw,32px);border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:rgba(12,11,10,.85);backdrop-filter:blur(10px);z-index:10;
+}
+.topbar .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif-cn);letter-spacing:.1em;font-size:.95rem}
+.topbar .brand img{width:32px;height:32px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
+.topbar .pin-tag{font-family:var(--serif-en);font-style:italic;color:var(--champagne);font-size:.9rem;letter-spacing:.1em}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+  padding:.9em 1.8em;border-radius:100px;border:1px solid var(--champagne);
+  background:transparent;color:var(--champagne-2);cursor:pointer;font-size:.95rem;letter-spacing:.08em;
+  transition:background-color .35s,color .35s,transform .2s,box-shadow .35s;
+}
+.btn:hover{background:var(--champagne);color:var(--ink)}
+.btn:active{transform:scale(.97)}
+.btn-solid{background:var(--champagne);color:var(--ink)}
+.btn-solid:hover{background:var(--champagne-2)}
+.btn-green{border-color:var(--green);background:var(--green);color:#fff}
+.btn-green:hover{background:#4fc47e;box-shadow:0 10px 30px -10px rgba(63,174,106,.6)}
+.btn-ghost{border-color:var(--line);color:var(--muted)}
+.btn-ghost:hover{background:rgba(244,239,230,.08);color:var(--ivory)}
+.btn:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+.btn-icon{width:56px;height:56px;border-radius:50%;padding:0;font-size:1.3rem}
+
+/* ---------- PIN gate ---------- */
+.pin-gate{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:28px;padding:30px;text-align:center;
+}
+.pin-gate .logo{width:64px;height:64px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px var(--line),0 0 40px rgba(200,168,107,.2)}
+.pin-gate h1{font-size:clamp(1.4rem,4vw,1.9rem);letter-spacing:.1em}
+.pin-gate p.sub{color:var(--muted);font-size:.9rem;max-width:26em}
+.pin-inputs{display:flex;gap:10px}
+.pin-inputs input{
+  width:clamp(40px,10vw,54px);height:clamp(52px,12vw,66px);text-align:center;
+  font-family:var(--serif-en);font-size:clamp(1.5rem,5vw,2rem);background:rgba(244,239,230,.04);
+  border:1px solid var(--line);border-radius:10px;color:var(--ivory);outline:none;
+  transition:border-color .3s,background-color .3s;
+}
+.pin-inputs input:focus{border-color:var(--champagne);background:rgba(200,168,107,.08)}
+.pin-error{color:#ff8a80;font-size:.88rem;min-height:1.4em}
+
+/* ---------- setup password gate ---------- */
+.pw-gate input[type=password]{
+  width:min(280px,80vw);padding:14px 18px;border-radius:10px;border:1px solid var(--line);
+  background:rgba(244,239,230,.04);color:var(--ivory);text-align:center;font-size:1.1rem;letter-spacing:.1em;outline:none;
+}
+.pw-gate input[type=password]:focus{border-color:var(--champagne)}
+
+/* ---------- misc ---------- */
+.spinner{width:22px;height:22px;border-radius:50%;border:2px solid rgba(244,239,230,.25);border-top-color:var(--champagne);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none !important}
+.toast-msg{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+  background:rgba(23,20,15,.95);border:1px solid var(--line);padding:14px 22px;border-radius:100px;
+  font-size:.88rem;opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);pointer-events:none;z-index:999;
+  max-width:88vw;text-align:center;
+}
+.toast-msg.show{opacity:1;transform:translateX(-50%) translateY(0)}

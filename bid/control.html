@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>竞标控制台 · Angel Sound &amp; Light</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/jpeg" href="../logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bid.css">
+<style>
+  .ctl-head{display:flex;flex-direction:column;gap:4px;margin-bottom:26px}
+  .ctl-progress{color:var(--muted);font-size:.85rem;letter-spacing:.1em}
+  .item-card{
+    background:rgba(244,239,230,.03);border:1px solid var(--line);border-radius:16px;
+    overflow:hidden;margin-bottom:22px;
+  }
+  .item-photo{width:100%;aspect-ratio:4/3;background:#000 center/cover no-repeat;position:relative}
+  .item-photo .sold-flag{
+    position:absolute;inset:0;background:rgba(12,11,10,.55);display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:opacity .4s;
+  }
+  .item-photo.is-sold .sold-flag{opacity:1}
+  .sold-stamp{
+    border:3px solid var(--red);color:#ff8a80;font-family:var(--serif-en);font-style:italic;font-size:2rem;
+    padding:6px 26px;border-radius:10px;transform:rotate(-8deg);letter-spacing:.1em;background:rgba(12,11,10,.4);
+  }
+  .item-body{padding:20px clamp(16px,4vw,26px) 26px}
+  .item-name{font-size:1.3rem;margin-bottom:4px}
+  .item-start{color:var(--muted);font-size:.85rem;margin-bottom:18px}
+  .price-row{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+  .price-row .cur{font-family:var(--serif-en);font-size:clamp(2rem,8vw,2.8rem);color:var(--champagne-2);font-variant-numeric:tabular-nums}
+  .price-row .lbl{color:var(--muted);font-size:.85rem;letter-spacing:.14em}
+  .sold-badge{
+    display:inline-flex;align-items:center;gap:8px;color:#8fe3ab;background:rgba(63,174,106,.12);
+    border:1px solid rgba(63,174,106,.4);padding:8px 16px;border-radius:100px;font-size:.88rem;margin-bottom:16px;
+  }
+  .price-form{display:flex;gap:10px;margin:14px 0 18px}
+  .price-form input{
+    flex:1;min-width:0;padding:14px 16px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(244,239,230,.04);color:var(--ivory);font-size:1.15rem;font-family:var(--serif-en);outline:none;
+  }
+  .price-form input:focus{border-color:var(--champagne)}
+  .action-row{display:flex;gap:12px;flex-wrap:wrap}
+  .action-row .btn{flex:1;min-width:140px}
+  .undo-row{margin-top:14px;text-align:center}
+  .undo-row button{background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:.82rem}
+  .nav-row{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:22px 0}
+  .dots{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;max-width:220px}
+  .dot{
+    width:14px;height:14px;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;padding:0;
+    transition:transform .25s,background-color .25s,border-color .25s;
+  }
+  .dot.is-sold{background:var(--green);border-color:var(--green)}
+  .dot.is-current{transform:scale(1.4);border-color:var(--champagne);box-shadow:0 0 0 3px rgba(200,168,107,.2)}
+  .share-row{display:flex;gap:10px;justify-content:center;margin-top:30px}
+  .share-row a{font-size:.82rem;color:var(--muted);text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- PIN gate -->
+<div class="pin-gate" id="pinGate">
+  <img src="../logo.jpg" alt="" class="logo">
+  <h1>竞标控制台</h1>
+  <p class="sub">请输入司仪 / 工作人员的 6 位数宴会 PIN 码，进入这场宴会的竞标控制页面。</p>
+  <div class="pin-inputs" id="pinInputs">
+    <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+    <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+    <input inputmode="numeric" maxlength="1"><input inputmode="numeric" maxlength="1">
+  </div>
+  <p class="pin-error" id="pinError"></p>
+</div>
+
+<!-- Control app -->
+<div class="hidden" id="app">
+  <header class="topbar">
+    <div class="brand"><img src="../logo.jpg" alt=""> <span id="eventName">—</span></div>
+    <span class="pin-tag" id="pinTag"></span>
+  </header>
+
+  <main class="wrap">
+    <div class="ctl-head">
+      <h2 style="font-size:1.1rem;color:var(--muted);font-weight:400;letter-spacing:.1em">当前竞标物品</h2>
+      <p class="ctl-progress" id="progressTxt">—</p>
+    </div>
+
+    <div class="item-card">
+      <div class="item-photo" id="itemPhoto">
+        <div class="sold-flag"><span class="sold-stamp">已成交 SOLD</span></div>
+      </div>
+      <div class="item-body">
+        <h3 class="item-name" id="itemName">—</h3>
+        <p class="item-start" id="itemStart"></p>
+
+        <div id="soldBadge" class="sold-badge hidden">✓ 已成交，成交价 <b id="soldPriceTxt"></b></div>
+
+        <div class="price-row"><span class="lbl">当前竞标价</span></div>
+        <div class="price-row"><span class="cur" id="curPrice">RM 0</span></div>
+
+        <form class="price-form" id="priceForm">
+          <input type="number" id="priceInput" inputmode="decimal" placeholder="输入新价格" min="0" step="1">
+          <button type="submit" class="btn btn-solid">更新价格</button>
+        </form>
+
+        <div class="action-row">
+          <button class="btn btn-green" id="soldBtn">✓ 成交 SOLD</button>
+        </div>
+        <div class="undo-row hidden" id="undoRow"><button id="undoBtn">撤销成交，重新开标</button></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn btn-icon btn-ghost" id="prevBtn" aria-label="上一样">←</button>
+      <div class="dots" id="dots"></div>
+      <button class="btn btn-icon btn-ghost" id="nextBtn" aria-label="下一样">→</button>
+    </div>
+
+    <div class="share-row">
+      <a id="displayLink" href="#" target="_blank" rel="noopener">打开大屏幕显示页 ↗</a>
+    </div>
+  </main>
+</div>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-init.js"></script>
+<script src="bid-common.js"></script>
+<script src="control.js"></script>
+</body>
+</html>
