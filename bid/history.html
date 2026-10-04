@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>历史宴会记录 · Angel Sound &amp; Light</title>
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/jpeg" href="../logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="bid.css">
+<style>
+  .btn-sm{padding:.55em 1.2em;font-size:.82rem}
+  .ev-card{
+    background:rgba(244,239,230,.03);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin-bottom:16px;
+  }
+  .ev-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:14px}
+  .ev-name{font-family:var(--serif-cn);font-size:1.1rem;color:var(--ivory);margin-bottom:4px}
+  .ev-meta{font-size:.82rem;color:var(--muted);font-family:var(--serif-en);letter-spacing:.05em}
+  .ev-actions{display:flex;flex-wrap:wrap;gap:8px}
+  .ev-items{margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+  .item-row{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;
+    padding:9px 0;border-bottom:1px solid rgba(244,239,230,.06);font-size:.9rem;
+  }
+  .item-row:last-of-type{border-bottom:none}
+  .ir-name{color:var(--ivory);min-width:8em}
+  .ir-start{color:var(--muted);font-size:.85rem}
+  .ir-status{font-size:.85rem;padding:.3em .9em;border-radius:100px;border:1px solid var(--line)}
+  .ir-status.is-sold{color:var(--green);border-color:var(--green)}
+  .ir-status.is-pending{color:var(--muted)}
+  .ir-total{text-align:right;margin-top:12px;color:var(--champagne-2);font-family:var(--serif-en);font-size:1.05rem;letter-spacing:.05em}
+  .empty-msg{text-align:center;color:var(--muted);padding:60px 0}
+  .loading-msg{text-align:center;color:var(--muted);padding:40px 0}
+</style>
+</head>
+<body>
+
+<!-- password gate -->
+<div class="pin-gate pw-gate" id="pwGate">
+  <img src="../logo.jpg" alt="" class="logo">
+  <h1>历史宴会记录</h1>
+  <p class="sub">此页面仅供天使娱乐机构工作人员使用，请输入管理密码。</p>
+  <form id="pwForm" style="display:flex;flex-direction:column;gap:14px;align-items:center">
+    <input type="password" id="pwInput" placeholder="管理密码" autocomplete="off">
+    <button class="btn btn-solid" type="submit">进入</button>
+  </form>
+  <p class="pin-error" id="pwError"></p>
+</div>
+
+<!-- history list -->
+<div class="hidden" id="app">
+  <header class="topbar">
+    <div class="brand"><img src="../logo.jpg" alt=""> <span>历史宴会记录</span></div>
+    <a class="btn btn-ghost btn-sm" href="setup.html">＋ 建立新宴会</a>
+  </header>
+
+  <main class="wrap">
+    <div id="listWrap"></div>
+    <p class="empty-msg hidden" id="emptyMsg">还没有任何宴会记录。</p>
+  </main>
+</div>
+
+<div class="toast-msg" id="toastMsg"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="firebase-init.js"></script>
+<script src="bid-common.js"></script>
+<script src="history.js"></script>
+</body>
+</html>
