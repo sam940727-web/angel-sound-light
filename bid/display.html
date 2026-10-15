@@ -10,9 +10,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="bid.css">
+<link rel="stylesheet" href="themes.css">
 <style>
   html,body{overflow:hidden}
-  .stage{position:fixed;inset:0;display:flex;flex-direction:column}
+  .pin-gate{position:relative;z-index:2}
+  .stage{position:fixed;inset:0;z-index:1;display:flex;flex-direction:column}
   .stage-top{display:flex;align-items:center;justify-content:space-between;padding:clamp(18px,3vw,40px) clamp(24px,4vw,60px)}
   .stage-brand{display:flex;align-items:center;gap:14px}
   .stage-brand img{width:clamp(36px,4vw,54px);height:clamp(36px,4vw,54px);border-radius:50%;object-fit:cover;box-shadow:0 0 0 1px var(--line)}
@@ -86,7 +88,9 @@
   }
 </style>
 </head>
-<body>
+<body class="theme-classic">
+
+<div class="bg-layer" id="bgLayer"><div class="bg-deco"></div><canvas class="bg-canvas"></canvas><div class="bg-vignette"></div></div>
 
 <div class="pin-gate" id="pinGate">
   <img src="../logo.jpg" alt="" class="logo">
@@ -135,6 +139,7 @@
 <script src="firebase-config.js"></script>
 <script src="firebase-init.js"></script>
 <script src="bid-common.js"></script>
+<script src="themes.js"></script>
 <script src="display.js"></script>
 </body>
 </html>

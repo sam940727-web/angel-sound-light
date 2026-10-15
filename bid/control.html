@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="bid.css">
+<link rel="stylesheet" href="themes.css">
 <style>
   .ctl-head{display:flex;flex-direction:column;gap:4px;margin-bottom:26px}
   .ctl-progress{color:var(--muted);font-size:.85rem;letter-spacing:.1em}
@@ -118,6 +119,12 @@
       <button class="btn btn-icon btn-ghost" id="nextBtn" aria-label="下一样">→</button>
     </div>
 
+    <div class="theme-section">
+      <h3>🎨 大屏幕背景</h3>
+      <p class="hint">点选后，大屏幕会立即淡入换成新的动态背景。</p>
+      <div class="theme-grid" id="themeGrid"></div>
+    </div>
+
     <div class="share-row">
       <a id="displayLink" href="#" target="_blank" rel="noopener">打开大屏幕显示页 ↗</a>
     </div>
@@ -132,6 +139,7 @@
 <script src="firebase-config.js"></script>
 <script src="firebase-init.js"></script>
 <script src="bid-common.js"></script>
+<script src="themes.js"></script>
 <script src="control.js"></script>
 </body>
 </html>

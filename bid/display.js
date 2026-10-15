@@ -63,6 +63,7 @@
 
   function render() {
     if (!eventData) return;
+    if (window.BidBg) window.BidBg.apply(eventData.theme || window.BID_THEME_DEFAULT);
     var idx = eventData.currentIndex || 0;
     var n = itemCount();
     var item = eventData.items[String(idx)] || {};
@@ -143,6 +144,8 @@
       pinError.textContent = '连线失败：' + e.message;
     }
   }
+
+  if (window.BidBg) window.BidBg.apply(window.BID_THEME_DEFAULT);
 
   BC.wirePinInputs(document.getElementById('pinInputs'), tryPin);
 

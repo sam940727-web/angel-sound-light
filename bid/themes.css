@@ -1,0 +1,97 @@
+/* ============================================================
+   大屏幕动态背景主题 + 控制台主题选择器
+   ============================================================ */
+
+/* ---------- background layer (display.html) ---------- */
+.bg-layer{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  transition:opacity .7s ease;
+}
+.bg-layer.is-fading{opacity:0}
+.bg-deco,.bg-canvas,.bg-vignette{position:absolute;inset:0}
+.bg-canvas{width:100%;height:100%}
+.bg-vignette{background:radial-gradient(ellipse at 50% 45%,transparent 45%,rgba(0,0,0,.55) 100%)}
+
+.theme-classic .bg-layer{background:radial-gradient(ellipse at 20% 0%,rgba(200,168,107,.16),transparent 55%),radial-gradient(ellipse at 90% 100%,rgba(138,114,68,.14),transparent 50%),#0c0b0a}
+.theme-festive .bg-layer{background:radial-gradient(ellipse at 50% 0%,#7a1212 0%,#3d0808 45%,#160303 100%)}
+.theme-stage .bg-layer{background:radial-gradient(ellipse at 50% 110%,#1d1530 0%,#07060c 60%,#030306 100%)}
+.theme-starry .bg-layer{background:radial-gradient(ellipse at 75% 20%,rgba(90,70,170,.22),transparent 45%),radial-gradient(ellipse at 15% 80%,rgba(30,90,160,.18),transparent 50%),linear-gradient(180deg,#02030c 0%,#071233 60%,#0f1d45 100%)}
+.theme-aurora .bg-layer{background:#03060c}
+.theme-sakura .bg-layer{background:radial-gradient(ellipse at 30% 10%,#43172b 0%,#1c0812 58%,#0d0407 100%)}
+.theme-fireworks .bg-layer{background:radial-gradient(ellipse at 50% 100%,#1c0f2e 0%,#08050f 65%,#040208 100%)}
+
+/* keep text legible on every theme */
+.stage-brand span,.stage-event,.info-eyebrow,.info-name,.info-start,.price-label,.sold-info{text-shadow:0 2px 14px rgba(0,0,0,.65)}
+.price-value{filter:drop-shadow(0 4px 20px rgba(0,0,0,.6))}
+
+/* ---------- festive: hanging lanterns ---------- */
+.lantern{position:absolute;top:0;width:46px;transform-origin:50% 0;animation:lanternSway var(--d,4s) ease-in-out infinite alternate}
+.lantern .str{width:2px;height:var(--len,60px);margin:0 auto;background:linear-gradient(#e2cc9b,#8a7244)}
+.lantern .cap{width:26px;height:7px;margin:0 auto;border-radius:3px;background:linear-gradient(#f3d27a,#b8862e)}
+.lantern .lbody{
+  position:relative;width:46px;height:56px;margin:0 auto;border-radius:45%;
+  background:radial-gradient(circle at 50% 38%,#ff7a52,#d01e1e 55%,#7a0b0b);
+  box-shadow:0 0 34px 8px rgba(255,90,40,.45),inset 0 0 0 1px rgba(255,200,120,.35);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif-cn);font-weight:700;color:#ffd98a;font-size:19px;
+  animation:lanternGlow 2.6s ease-in-out infinite alternate;
+}
+.lantern .lbody::before{content:"";position:absolute;inset:0 28%;border-left:1px solid rgba(255,210,120,.35);border-right:1px solid rgba(255,210,120,.35);border-radius:45%}
+.lantern .tassel{width:4px;height:28px;margin:0 auto;background:linear-gradient(#f3d27a,#c41a1a);border-radius:0 0 3px 3px}
+@keyframes lanternSway{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
+@keyframes lanternGlow{from{box-shadow:0 0 24px 4px rgba(255,90,40,.35),inset 0 0 0 1px rgba(255,200,120,.35)}to{box-shadow:0 0 46px 12px rgba(255,110,50,.6),inset 0 0 0 1px rgba(255,200,120,.35)}}
+
+/* ---------- stage: sweeping spotlight beams ---------- */
+.beam{
+  position:absolute;top:-6vh;width:26vw;height:125vh;margin-left:-13vw;transform-origin:50% 0;
+  clip-path:polygon(47% 0,53% 0,100% 100%,0 100%);mix-blend-mode:screen;opacity:.28;
+  background:linear-gradient(180deg,var(--c) 0%,transparent 82%);
+  animation:beamSweep var(--d,7s) ease-in-out infinite alternate;animation-delay:var(--delay,0s);
+}
+@keyframes beamSweep{from{transform:rotate(var(--a1))}to{transform:rotate(var(--a2))}}
+.fixture{position:absolute;top:-10px;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--c);box-shadow:0 0 30px 10px var(--c);opacity:.8;animation:fixturePulse 2.2s ease-in-out infinite alternate}
+@keyframes fixturePulse{to{opacity:.4}}
+.stage-floor{position:absolute;left:-10%;right:-10%;bottom:-20vh;height:45vh;background:radial-gradient(ellipse at 50% 100%,rgba(200,168,107,.25),transparent 65%);animation:floorPulse 5s ease-in-out infinite alternate}
+@keyframes floorPulse{to{opacity:.5}}
+
+/* ---------- aurora: drifting colour blobs ---------- */
+.blob{position:absolute;width:75vmax;height:75vmax;border-radius:50%;opacity:.55;mix-blend-mode:screen;animation:blobDrift var(--d,24s) ease-in-out infinite alternate}
+.blob.b1{left:-25vmax;top:-30vmax;background:radial-gradient(circle,rgba(31,209,165,.55),transparent 62%);--d:22s}
+.blob.b2{right:-30vmax;top:-20vmax;background:radial-gradient(circle,rgba(123,47,247,.55),transparent 62%);--d:28s;animation-direction:alternate-reverse}
+.blob.b3{left:10vmax;bottom:-40vmax;background:radial-gradient(circle,rgba(43,108,255,.45),transparent 62%);--d:32s}
+.blob.b4{right:-10vmax;bottom:-35vmax;background:radial-gradient(circle,rgba(226,204,155,.35),transparent 62%);--d:26s;animation-direction:alternate-reverse}
+@keyframes blobDrift{
+  0%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(12vmax,8vmax) scale(1.15)}
+  100%{transform:translate(-8vmax,14vmax) scale(.92)}
+}
+
+@media (max-width:860px){.lantern.center{display:none}}
+
+/* ---------- theme picker (control.html) ---------- */
+.theme-section{margin-top:34px;padding-top:24px;border-top:1px solid var(--line)}
+.theme-section h3{font-size:1rem;letter-spacing:.12em;color:var(--champagne-2);margin-bottom:4px}
+.theme-section .hint{font-size:.8rem;color:var(--muted);margin-bottom:16px}
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.theme-opt{
+  position:relative;text-align:left;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  background:rgba(244,239,230,.03);cursor:pointer;padding:0;transition:border-color .3s,transform .2s,box-shadow .3s;
+}
+.theme-opt:hover{border-color:var(--champagne);transform:translateY(-2px)}
+.theme-opt.is-active{border-color:var(--champagne);box-shadow:0 0 0 2px rgba(200,168,107,.45)}
+.theme-opt.is-active::after{
+  content:"✓";position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;
+  background:var(--champagne);color:var(--ink);font-size:.8rem;display:flex;align-items:center;justify-content:center;font-weight:600;
+}
+.theme-opt .sw{display:block;height:74px;background-size:125% 125%;animation:swPan 6s ease-in-out infinite alternate}
+.theme-opt .tn{display:block;padding:9px 12px 2px;font-family:var(--serif-cn);font-size:.92rem;color:var(--ivory)}
+.theme-opt .td{display:block;padding:0 12px 11px;font-size:.72rem;color:var(--muted);line-height:1.45}
+@keyframes swPan{from{background-position:0% 0%}to{background-position:100% 100%}}
+
+.sw-classic{background:radial-gradient(circle at 25% 30%,rgba(226,204,155,.55) 0 6%,transparent 18%),radial-gradient(circle at 70% 65%,rgba(226,204,155,.35) 0 8%,transparent 22%),radial-gradient(circle at 85% 20%,rgba(200,168,107,.3) 0 4%,transparent 14%),linear-gradient(135deg,#1d1810,#0c0b0a 60%,#1a150d)}
+.sw-festive{background:radial-gradient(circle at 22% 38%,#ff6b4a 0 9%,transparent 11%),radial-gradient(circle at 78% 38%,#ff6b4a 0 9%,transparent 11%),radial-gradient(circle at 50% 70%,rgba(243,210,122,.6) 0 2%,transparent 4%),linear-gradient(135deg,#7a1212,#3d0808 55%,#160303)}
+.sw-stage{background:linear-gradient(160deg,transparent 40%,rgba(255,80,200,.45) 48%,transparent 56%),linear-gradient(200deg,transparent 40%,rgba(80,200,255,.45) 48%,transparent 56%),linear-gradient(180deg,transparent 40%,rgba(226,204,155,.4) 50%,transparent 60%),#07060c}
+.sw-starry{background:radial-gradient(circle at 15% 25%,#fff 0 1px,transparent 2px),radial-gradient(circle at 60% 15%,#fff 0 1px,transparent 2px),radial-gradient(circle at 80% 55%,#fff 0 1.5px,transparent 2.5px),radial-gradient(circle at 35% 70%,#cfe1ff 0 1px,transparent 2px),radial-gradient(circle at 90% 85%,#fff 0 1px,transparent 2px),linear-gradient(180deg,#02030c,#0f1d45)}
+.sw-aurora{background:radial-gradient(circle at 20% 30%,rgba(31,209,165,.8),transparent 45%),radial-gradient(circle at 80% 30%,rgba(123,47,247,.8),transparent 45%),radial-gradient(circle at 50% 90%,rgba(43,108,255,.7),transparent 45%),#03060c}
+.sw-sakura{background:radial-gradient(ellipse 6% 4% at 20% 30%,#ffc1d0 60%,transparent 70%),radial-gradient(ellipse 5% 3.5% at 70% 20%,#ffb0c4 60%,transparent 70%),radial-gradient(ellipse 6% 4% at 55% 70%,#ffd4de 60%,transparent 70%),radial-gradient(ellipse 4% 3% at 85% 75%,#ffb7c5 60%,transparent 70%),linear-gradient(135deg,#43172b,#1c0812 60%,#0d0407)}
+.sw-fireworks{background:radial-gradient(circle at 30% 35%,rgba(255,215,120,.9) 0 2%,rgba(255,140,60,.4) 8%,transparent 18%),radial-gradient(circle at 72% 30%,rgba(255,120,200,.9) 0 2%,rgba(200,80,255,.35) 8%,transparent 18%),radial-gradient(circle at 55% 65%,rgba(120,220,255,.8) 0 2%,rgba(60,140,255,.3) 7%,transparent 15%),linear-gradient(180deg,#08050f,#1c0f2e)}

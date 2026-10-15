@@ -60,6 +60,37 @@
     }
 
     document.getElementById('displayLink').href = 'display.html?pin=' + pin;
+
+    var activeTheme = eventData.theme || window.BID_THEME_DEFAULT;
+    document.querySelectorAll('#themeGrid .theme-opt').forEach(function (b) {
+      b.classList.toggle('is-active', b.dataset.theme === activeTheme);
+    });
+  }
+
+  function buildThemePicker() {
+    var grid = document.getElementById('themeGrid');
+    (window.BID_THEMES || []).forEach(function (th) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'theme-opt';
+      b.dataset.theme = th.id;
+      var sw = document.createElement('span');
+      sw.className = 'sw sw-' + th.id;
+      var tn = document.createElement('span');
+      tn.className = 'tn';
+      tn.textContent = th.name;
+      var td = document.createElement('span');
+      td.className = 'td';
+      td.textContent = th.desc;
+      b.appendChild(sw); b.appendChild(tn); b.appendChild(td);
+      b.addEventListener('click', function () {
+        if (!eventData) return;
+        BC.updateFields(pin, { theme: th.id })
+          .then(function () { BC.showToast('大屏幕背景已换成「' + th.name + '」'); })
+          .catch(function (e) { BC.showToast('更换失败：' + e.message); });
+      });
+      grid.appendChild(b);
+    });
   }
 
   function goTo(idx) {
@@ -141,6 +172,7 @@
   document.getElementById('prevBtn').addEventListener('click', function () { goTo((eventData.currentIndex || 0) - 1); });
   document.getElementById('nextBtn').addEventListener('click', function () { goTo((eventData.currentIndex || 0) + 1); });
 
+  buildThemePicker();
   BC.wirePinInputs(document.getElementById('pinInputs'), tryPin);
 
   if (pin) {
