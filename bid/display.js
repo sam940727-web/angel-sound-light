@@ -64,6 +64,7 @@
   function render() {
     if (!eventData) return;
     if (window.BidBg) window.BidBg.apply(eventData.theme || window.BID_THEME_DEFAULT);
+    if (window.BidFrame) window.BidFrame.apply(document.getElementById('frameWrap'), eventData.frame || window.BID_FRAME_DEFAULT);
     var idx = eventData.currentIndex || 0;
     var n = itemCount();
     var item = eventData.items[String(idx)] || {};
@@ -146,6 +147,7 @@
   }
 
   if (window.BidBg) window.BidBg.apply(window.BID_THEME_DEFAULT);
+  if (window.BidFrame) window.BidFrame.apply(document.getElementById('frameWrap'), window.BID_FRAME_DEFAULT);
 
   BC.wirePinInputs(document.getElementById('pinInputs'), tryPin);
 

@@ -95,3 +95,198 @@
 .sw-aurora{background:radial-gradient(circle at 20% 30%,rgba(31,209,165,.8),transparent 45%),radial-gradient(circle at 80% 30%,rgba(123,47,247,.8),transparent 45%),radial-gradient(circle at 50% 90%,rgba(43,108,255,.7),transparent 45%),#03060c}
 .sw-sakura{background:radial-gradient(ellipse 6% 4% at 20% 30%,#ffc1d0 60%,transparent 70%),radial-gradient(ellipse 5% 3.5% at 70% 20%,#ffb0c4 60%,transparent 70%),radial-gradient(ellipse 6% 4% at 55% 70%,#ffd4de 60%,transparent 70%),radial-gradient(ellipse 4% 3% at 85% 75%,#ffb7c5 60%,transparent 70%),linear-gradient(135deg,#43172b,#1c0812 60%,#0d0407)}
 .sw-fireworks{background:radial-gradient(circle at 30% 35%,rgba(255,215,120,.9) 0 2%,rgba(255,140,60,.4) 8%,transparent 18%),radial-gradient(circle at 72% 30%,rgba(255,120,200,.9) 0 2%,rgba(200,80,255,.35) 8%,transparent 18%),radial-gradient(circle at 55% 65%,rgba(120,220,255,.8) 0 2%,rgba(60,140,255,.3) 7%,transparent 15%),linear-gradient(180deg,#08050f,#1c0f2e)}
+
+/* ============================================================
+   神庙 / 喜庆主题（第二批）
+   ============================================================ */
+.theme-temple .bg-layer{background:radial-gradient(ellipse at 50% 0%,#8c2412 0%,#4a0b0b 45%,#170303 100%)}
+.theme-fortune .bg-layer{background:radial-gradient(ellipse at 50% 30%,#7a1a0c 0%,#430808 50%,#1a0303 100%)}
+.theme-dragon .bg-layer{background:radial-gradient(ellipse at 50% 50%,#3d0c0c 0%,#1e0606 55%,#0a0202 100%)}
+.theme-divine .bg-layer{background:radial-gradient(ellipse at 50% 40%,#5a3c12 0%,#24160a 45%,#0a0603 100%)}
+.theme-firecracker .bg-layer{background:radial-gradient(ellipse at 50% 20%,#8f1414 0%,#4a0707 50%,#1a0202 100%)}
+
+/* rotating golden rays */
+.rays{
+  position:absolute;left:50%;top:var(--ry,-10vh);width:130vmax;height:130vmax;margin:-65vmax 0 0 -65vmax;
+  background:repeating-conic-gradient(from 0deg,var(--rc,rgba(255,214,130,.13)) 0 5deg,transparent 5deg 15deg);
+  -webkit-mask:radial-gradient(circle closest-side,#000 0%,rgba(0,0,0,.45) 35%,transparent 72%);
+  mask:radial-gradient(circle closest-side,#000 0%,rgba(0,0,0,.45) 35%,transparent 72%);
+  animation:raySpin 90s linear infinite;
+}
+@keyframes raySpin{to{transform:rotate(360deg)}}
+
+/* drifting auspicious clouds */
+.xcloud{position:absolute;left:0;opacity:var(--o,.6);animation:xcloudDrift var(--d,70s) linear infinite;animation-delay:var(--delay,0s)}
+.xcloud svg{display:block;width:100%;height:auto}
+.xcloud .cb{fill:rgba(232,196,106,.07);stroke:rgba(232,196,106,.55);stroke-width:1.4}
+.xcloud .cc{fill:none;stroke:rgba(232,196,106,.55);stroke-width:1.4;stroke-linecap:round}
+@keyframes xcloudDrift{from{transform:translateX(-25vw)}to{transform:translateX(110vw)}}
+
+/* couplets */
+.couplet{
+  position:absolute;top:17vh;width:clamp(36px,3.2vw,56px);padding:clamp(12px,1.4vw,20px) 0;
+  background:linear-gradient(90deg,#8e0f15,#c21d24 50%,#8e0f15);border:2px solid #d9b25c;border-radius:3px;
+  box-shadow:0 0 0 3px rgba(0,0,0,.25),0 10px 40px rgba(0,0,0,.5),0 0 30px rgba(255,120,60,.25);
+  color:#ffd77a;font-family:var(--serif-cn);font-weight:700;font-size:clamp(18px,2vw,34px);
+  writing-mode:vertical-rl;text-orientation:upright;letter-spacing:.35em;
+  display:flex;align-items:center;justify-content:center;text-shadow:0 0 12px rgba(255,190,80,.55);
+  animation:coupletGlow 3s ease-in-out infinite alternate;
+}
+.couplet.left{left:clamp(6px,1vw,20px)}
+.couplet.right{right:clamp(6px,1vw,20px)}
+@keyframes coupletGlow{to{box-shadow:0 0 0 3px rgba(0,0,0,.25),0 10px 40px rgba(0,0,0,.5),0 0 50px rgba(255,140,60,.45)}}
+
+/* divine: halos + mandala */
+.halo{
+  position:absolute;left:50%;top:40%;width:40vmin;height:40vmin;margin:-20vmin 0 0 -20vmin;border-radius:50%;
+  border:2px solid rgba(255,215,130,.5);box-shadow:0 0 30px rgba(255,200,100,.35),inset 0 0 30px rgba(255,200,100,.25);
+  opacity:0;animation:haloOut 7.5s linear infinite;
+}
+.halo.h2{animation-delay:-2.5s}
+.halo.h3{animation-delay:-5s}
+@keyframes haloOut{0%{transform:scale(.3);opacity:0}15%{opacity:.55}100%{transform:scale(3.2);opacity:0}}
+.mandala{position:absolute;left:50%;top:40%;width:90vmin;height:90vmin;margin:-45vmin 0 0 -45vmin;opacity:.18;animation:raySpin 140s linear infinite}
+.mandala.m2{width:56vmin;height:56vmin;margin:-28vmin 0 0 -28vmin;opacity:.26;animation-duration:90s;animation-direction:reverse}
+.mandala svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 6px rgba(255,200,100,.6))}
+
+/* firecracker strings */
+.crackers{
+  position:absolute;top:0;width:clamp(30px,3vw,52px);display:flex;flex-direction:column;align-items:center;
+  transform-origin:50% 0;animation:lanternSway 3.4s ease-in-out infinite alternate;
+}
+.crackers.left{left:clamp(6px,1.2vw,22px)}
+.crackers.right{right:clamp(6px,1.2vw,22px);animation-duration:3.9s;animation-direction:alternate-reverse}
+.ck-str{display:block;width:2px;height:5vh;background:linear-gradient(#e2cc9b,#b8862e)}
+.ck-knot{
+  width:clamp(28px,2.5vw,42px);height:clamp(28px,2.5vw,42px);transform:rotate(45deg);margin:-4px 0 10px;
+  background:radial-gradient(circle,#e8262e,#9a0d12);border:2px solid #e7c46d;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(255,80,40,.55);
+}
+.ck-knot span{transform:rotate(-45deg);color:#ffd77a;font-family:var(--serif-cn);font-weight:700;font-size:clamp(13px,1.2vw,20px)}
+.ck{
+  display:block;width:100%;height:clamp(8px,.8vw,13px);margin-top:-1px;border-radius:3px;
+  background:linear-gradient(180deg,rgba(255,255,255,.28),transparent 45%,rgba(0,0,0,.3)),linear-gradient(90deg,#e7c46d 0 9%,#c8121a 9% 91%,#e7c46d 91%);
+}
+.ck:nth-of-type(odd){transform:rotate(16deg)}
+.ck:nth-of-type(even){transform:rotate(-16deg)}
+.ck-end{display:block;width:3px;height:14px;background:#d9b25c}
+
+@media (max-width:860px){
+  .couplet{display:none}
+  .crackers{width:24px}
+  .crackers .ck{height:7px}
+}
+
+/* ============================================================
+   照片框款式 (display + 控制台预览)
+   ============================================================ */
+.frame-wrap{
+  position:relative;--u:clamp(.75px,.075vw,1.5px);padding:calc(var(--u) * var(--pad,0));
+  --gold-grad:linear-gradient(135deg,#7a5a1e 0%,#f6e3a1 20%,#b8862e 38%,#fff2c4 52%,#a8781f 70%,#f0d48a 86%,#7a5a1e 100%);
+}
+.frame-wrap:not(.frame-simple) .photo-frame{border:none}
+.frame-deco{position:absolute;inset:0;pointer-events:none;z-index:4}
+.frame-deco > *{position:absolute;display:block;font-style:normal}
+.frame-deco .ring{
+  inset:0;padding:calc(var(--u) * var(--bw,3));border-radius:calc(var(--u) * var(--br,10));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
+}
+@keyframes goldShine{from{background-position:0% 0%}to{background-position:100% 100%}}
+
+.frame-simple{--pad:0;--pr:calc(var(--u) * 15)}
+
+/* gold + 回纹 */
+.frame-gold{--pad:13;--pr:calc(var(--u) * 4)}
+.frame-gold .frame-deco{filter:drop-shadow(0 0 calc(var(--u) * 12) rgba(240,200,110,.4))}
+.frame-gold .ring.outer{--bw:5;--br:10;background:var(--gold-grad);background-size:300% 300%;animation:goldShine 4s ease-in-out infinite alternate}
+.frame-gold .ring.inner{inset:calc(var(--u) * 8);--bw:1.5;--br:6;background:rgba(240,212,138,.8)}
+.frame-gold .corner{width:calc(var(--u) * 58);height:calc(var(--u) * 58);animation:cornerGlow 2.6s ease-in-out infinite alternate}
+.frame-gold .corner svg{width:100%;height:100%;display:block}
+.frame-gold .corner.tl{left:calc(var(--u) * -7);top:calc(var(--u) * -7)}
+.frame-gold .corner.tr{right:calc(var(--u) * -7);top:calc(var(--u) * -7)}
+.frame-gold .corner.bl{left:calc(var(--u) * -7);bottom:calc(var(--u) * -7)}
+.frame-gold .corner.br{right:calc(var(--u) * -7);bottom:calc(var(--u) * -7)}
+.frame-gold .corner.tr svg{transform:scaleX(-1)}
+.frame-gold .corner.bl svg{transform:scaleY(-1)}
+.frame-gold .corner.br svg{transform:scale(-1,-1)}
+@keyframes cornerGlow{from{filter:drop-shadow(0 0 calc(var(--u) * 2) rgba(255,220,140,.5))}to{filter:drop-shadow(0 0 calc(var(--u) * 10) rgba(255,220,140,.95))}}
+
+/* temple gate + plaque */
+.frame-temple{--pad:20;--pr:calc(var(--u) * 3)}
+.frame-temple .frame-deco{filter:drop-shadow(0 calc(var(--u) * 10) calc(var(--u) * 24) rgba(0,0,0,.55))}
+.frame-temple .ring.lacquer{--bw:20;--br:6;background:linear-gradient(180deg,#c01a22,#7a0a10)}
+.frame-temple .ring.studs{
+  --bw:20;--br:6;
+  background:radial-gradient(circle,#fff0b8 0 14%,#e0ad45 26%,#8a5a12 33%,transparent 37%) 0 0/calc(var(--u) * 20) calc(var(--u) * 20) round;
+}
+.frame-temple .ring.gl1{--bw:2.5;--br:6;background:#e7c46d}
+.frame-temple .ring.gl2{inset:calc(var(--u) * 17.5);--bw:2.5;--br:3;background:#e7c46d}
+.frame-temple .plaque{
+  left:50%;top:0;transform:translate(-50%,-62%);padding:calc(var(--u) * 7) calc(var(--u) * 30);
+  background:linear-gradient(180deg,#c01a22,#6d0a10);border:calc(var(--u) * 3) solid #e7c46d;border-radius:calc(var(--u) * 4);
+  outline:calc(var(--u) * 1.5) solid rgba(231,196,109,.8);outline-offset:calc(var(--u) * 3);
+  font-family:var(--serif-cn);font-weight:700;font-size:calc(var(--u) * 24);line-height:1.25;letter-spacing:.3em;text-indent:.3em;
+  color:#ffe08a;white-space:nowrap;text-shadow:0 0 calc(var(--u) * 10) rgba(255,200,90,.7);
+  animation:plaqueGlow 2.8s ease-in-out infinite alternate;
+}
+@keyframes plaqueGlow{from{box-shadow:0 0 calc(var(--u) * 8) rgba(255,180,80,.25)}to{box-shadow:0 0 calc(var(--u) * 28) rgba(255,180,80,.7)}}
+
+/* cloud */
+.frame-cloud{--pad:9;--pr:calc(var(--u) * 12)}
+.frame-cloud .frame-deco{filter:drop-shadow(0 0 calc(var(--u) * 10) rgba(240,200,110,.45))}
+.frame-cloud .ring.outer{--bw:3;--br:18;background:var(--gold-grad);background-size:300% 300%;animation:goldShine 4s ease-in-out infinite alternate}
+.frame-cloud .cl{width:calc(var(--u) * 120);animation:cloudBob 3.6s ease-in-out infinite alternate}
+.frame-cloud .cl svg{display:block;width:100%;height:auto}
+.frame-cloud .cl .cb{fill:#e8c46a;stroke:#8a6420;stroke-width:2}
+.frame-cloud .cl .cc{fill:none;stroke:#8a6420;stroke-width:2.6;stroke-linecap:round}
+.frame-cloud .cl.tl{left:calc(var(--u) * -34);top:calc(var(--u) * -30)}
+.frame-cloud .cl.tr{right:calc(var(--u) * -34);top:calc(var(--u) * -30);animation-delay:-1.2s}
+.frame-cloud .cl.bl{left:calc(var(--u) * -34);bottom:calc(var(--u) * -26);animation-delay:-2.4s}
+.frame-cloud .cl.br{right:calc(var(--u) * -34);bottom:calc(var(--u) * -26);animation-delay:-.6s}
+.frame-cloud .cl.tr svg,.frame-cloud .cl.br svg{transform:scaleX(-1)}
+@keyframes cloudBob{from{transform:translate(0,0)}to{transform:translate(calc(var(--u) * 6),calc(var(--u) * -6))}}
+
+/* marquee bulbs */
+.frame-marquee{--pad:18;--pr:calc(var(--u) * 5)}
+.frame-marquee .ring.base{--bw:18;--br:10;background:linear-gradient(135deg,#4a3412,#1c1307 50%,#4a3412)}
+.frame-marquee .ring.edge{inset:calc(var(--u) * 16);--bw:2;--br:5;background:#e7c46d}
+.frame-marquee .ring.bulbs{--bw:18;--br:10;background-size:calc(var(--u) * 36) calc(var(--u) * 36);background-repeat:round}
+.frame-marquee .ring.bulbs.a{
+  background-image:radial-gradient(circle at 25% 25%,#fffbe6 0 calc(var(--u) * 2.5),#ffd45a calc(var(--u) * 4),rgba(255,190,60,.45) calc(var(--u) * 6),transparent calc(var(--u) * 8.5)),
+                   radial-gradient(circle at 75% 75%,#fffbe6 0 calc(var(--u) * 2.5),#ffd45a calc(var(--u) * 4),rgba(255,190,60,.45) calc(var(--u) * 6),transparent calc(var(--u) * 8.5));
+  animation:bulbA .9s steps(1) infinite;
+}
+.frame-marquee .ring.bulbs.b{
+  background-image:radial-gradient(circle at 75% 25%,#fffbe6 0 calc(var(--u) * 2.5),#ffd45a calc(var(--u) * 4),rgba(255,190,60,.45) calc(var(--u) * 6),transparent calc(var(--u) * 8.5)),
+                   radial-gradient(circle at 25% 75%,#fffbe6 0 calc(var(--u) * 2.5),#ffd45a calc(var(--u) * 4),rgba(255,190,60,.45) calc(var(--u) * 6),transparent calc(var(--u) * 8.5));
+  animation:bulbB .9s steps(1) infinite;
+}
+.frame-marquee .frame-deco{filter:drop-shadow(0 0 calc(var(--u) * 10) rgba(255,200,90,.45))}
+@keyframes bulbA{0%{opacity:1}50%{opacity:.22}}
+@keyframes bulbB{0%{opacity:.22}50%{opacity:1}}
+
+/* flowing light */
+.frame-flow{--pad:6;--pr:calc(var(--u) * 14)}
+.frame-flow .frame-deco{filter:drop-shadow(0 0 calc(var(--u) * 9) rgba(255,215,130,.8))}
+.frame-flow .ring.base{--bw:4;--br:18;background:rgba(200,168,107,.3)}
+.frame-flow .ring.flow{--bw:4;--br:18;overflow:hidden}
+.frame-flow .spin{
+  position:absolute;left:50%;top:50%;width:300%;aspect-ratio:1;
+  background:conic-gradient(from 0deg,transparent 0 12%,#fff2c4 22%,#e2b24a 30%,transparent 42% 62%,#ffd9ef 72%,#c8a86b 80%,transparent 92%);
+  animation:flowSpin 4s linear infinite;
+}
+@keyframes flowSpin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+
+/* control: frame preview tiles */
+.fsw{display:flex;align-items:center;justify-content:center;height:84px;background:radial-gradient(ellipse at 50% 30%,#2a1610,#0e0a08)}
+.fsw .frame-wrap{--u:.4px;width:60%;height:56px}
+.fsw .fp-photo{height:100%;border-radius:var(--pr);background:linear-gradient(135deg,#7a6136,#2a2014);border:1px solid rgba(200,168,107,.25)}
+.fsw .frame-wrap:not(.frame-simple) .fp-photo{border:none}
+
+/* swatches for new themes */
+.sw-temple{background:repeating-conic-gradient(from 0deg at 50% -10%,rgba(255,210,120,.28) 0 5deg,transparent 5deg 14deg),radial-gradient(ellipse at 50% 0%,#8c2412,#3a0808 75%)}
+.sw-fortune{background:radial-gradient(circle at 28% 40%,#fff1b8 0 5%,#e3ad3e 8%,#9a6a14 11%,transparent 12%),radial-gradient(circle at 72% 62%,#fff1b8 0 6%,#e3ad3e 9%,#9a6a14 12%,transparent 13%),radial-gradient(ellipse 14% 7% at 55% 28%,#f3c858 60%,transparent 70%),radial-gradient(ellipse at 50% 30%,#7a1a0c,#2a0505 80%)}
+.sw-dragon{background:radial-gradient(circle at 78% 35%,#fff 0 4%,rgba(255,220,140,.7) 8%,transparent 18%),linear-gradient(160deg,transparent 38%,rgba(176,122,28,.9) 44%,#ffe9a6 50%,rgba(176,122,28,.9) 56%,transparent 62%),radial-gradient(ellipse,#3d0c0c,#0a0202 80%)}
+.sw-divine{background:radial-gradient(circle at 50% 50%,rgba(255,230,160,.85) 0 6%,transparent 26%),repeating-conic-gradient(from 0deg at 50% 50%,rgba(255,214,130,.3) 0 6deg,transparent 6deg 16deg),radial-gradient(circle,#5a3c12,#0a0603 80%)}
+.sw-firecracker{background:radial-gradient(circle at 15% 85%,rgba(255,240,200,.95) 0 3%,rgba(255,180,60,.5) 9%,transparent 18%),radial-gradient(circle at 85% 80%,rgba(255,240,200,.9) 0 3%,rgba(255,180,60,.5) 9%,transparent 18%),linear-gradient(90deg,transparent 11%,#d4141c 11% 19%,transparent 19% 81%,#d4141c 81% 89%,transparent 89%),radial-gradient(ellipse at 50% 20%,#8f1414,#1a0202 85%)}

@@ -65,24 +65,56 @@
     document.querySelectorAll('#themeGrid .theme-opt').forEach(function (b) {
       b.classList.toggle('is-active', b.dataset.theme === activeTheme);
     });
+    var activeFrame = eventData.frame || window.BID_FRAME_DEFAULT;
+    document.querySelectorAll('#frameGrid .theme-opt').forEach(function (b) {
+      b.classList.toggle('is-active', b.dataset.frame === activeFrame);
+    });
+  }
+
+  function pickerButton(name, desc, swatch) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'theme-opt';
+    var tn = document.createElement('span');
+    tn.className = 'tn';
+    tn.textContent = name;
+    var td = document.createElement('span');
+    td.className = 'td';
+    td.textContent = desc;
+    b.appendChild(swatch); b.appendChild(tn); b.appendChild(td);
+    return b;
+  }
+
+  function buildFramePicker() {
+    var grid = document.getElementById('frameGrid');
+    (window.BID_FRAMES || []).forEach(function (fr) {
+      var sw = document.createElement('span');
+      sw.className = 'fsw';
+      var wrap = document.createElement('span');
+      wrap.className = 'frame-wrap';
+      wrap.style.display = 'block';
+      wrap.innerHTML = '<span class="fp-photo" style="display:block"></span><span class="frame-deco"></span>';
+      sw.appendChild(wrap);
+      window.BidFrame.apply(wrap, fr.id);
+      var b = pickerButton(fr.name, fr.desc, sw);
+      b.dataset.frame = fr.id;
+      b.addEventListener('click', function () {
+        if (!eventData) return;
+        BC.updateFields(pin, { frame: fr.id })
+          .then(function () { BC.showToast('照片框已换成「' + fr.name + '」'); })
+          .catch(function (e) { BC.showToast('更换失败：' + e.message); });
+      });
+      grid.appendChild(b);
+    });
   }
 
   function buildThemePicker() {
     var grid = document.getElementById('themeGrid');
     (window.BID_THEMES || []).forEach(function (th) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'theme-opt';
-      b.dataset.theme = th.id;
       var sw = document.createElement('span');
       sw.className = 'sw sw-' + th.id;
-      var tn = document.createElement('span');
-      tn.className = 'tn';
-      tn.textContent = th.name;
-      var td = document.createElement('span');
-      td.className = 'td';
-      td.textContent = th.desc;
-      b.appendChild(sw); b.appendChild(tn); b.appendChild(td);
+      var b = pickerButton(th.name, th.desc, sw);
+      b.dataset.theme = th.id;
       b.addEventListener('click', function () {
         if (!eventData) return;
         BC.updateFields(pin, { theme: th.id })
@@ -173,6 +205,7 @@
   document.getElementById('nextBtn').addEventListener('click', function () { goTo((eventData.currentIndex || 0) + 1); });
 
   buildThemePicker();
+  buildFramePicker();
   BC.wirePinInputs(document.getElementById('pinInputs'), tryPin);
 
   if (pin) {

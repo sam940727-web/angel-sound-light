@@ -25,8 +25,9 @@
     flex:1;display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,70px);
     align-items:center;padding:0 clamp(24px,5vw,80px);min-height:0;
   }
+  .frame-wrap{height:100%;max-height:82vh;min-height:0}
   .photo-frame{
-    position:relative;height:100%;max-height:82vh;border-radius:18px;overflow:hidden;
+    position:relative;height:100%;border-radius:var(--pr,18px);overflow:hidden;
     background:#000 center/cover no-repeat;box-shadow:0 50px 100px -40px rgba(0,0,0,.7);
     border:1px solid var(--line);
   }
@@ -83,7 +84,7 @@
 
   @media (max-width:860px){
     .stage-main{grid-template-columns:1fr;grid-template-rows:1.1fr 1fr;padding:0 20px}
-    .photo-frame{max-height:46vh}
+    .frame-wrap{max-height:46vh}
     .info-col{align-items:flex-start}
   }
 </style>
@@ -111,10 +112,13 @@
   </div>
 
   <div class="stage-main">
-    <div class="photo-frame" id="photoFrame">
-      <span class="item-badge" id="itemBadge">01 / 10</span>
-      <span class="live-badge" id="liveBadge"><span class="live-dot"></span>LIVE 竞标中</span>
-      <div class="sold-overlay" id="soldOverlay"><span class="sold-ribbon">已成交 SOLD</span></div>
+    <div class="frame-wrap" id="frameWrap">
+      <div class="photo-frame" id="photoFrame">
+        <span class="item-badge" id="itemBadge">01 / 10</span>
+        <span class="live-badge" id="liveBadge"><span class="live-dot"></span>LIVE 竞标中</span>
+        <div class="sold-overlay" id="soldOverlay"><span class="sold-ribbon">已成交 SOLD</span></div>
+      </div>
+      <div class="frame-deco"></div>
     </div>
     <div class="info-col">
       <p class="info-eyebrow">Current Lot · 当前竞标物品</p>
