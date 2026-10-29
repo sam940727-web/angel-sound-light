@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>我的行程日历 · Angel Sound &amp; Light</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0b09">
+<link rel="icon" type="image/jpeg" href="../logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cal.css">
+</head>
+<body class="cal-theme-champagne">
+
+<div class="cal-bg" id="calBg" aria-hidden="true"></div>
+
+<section class="gate" id="gate">
+  <img src="../logo.jpg" alt="" class="logo">
+  <p class="eyebrow">Angel Sound &amp; Light</p>
+  <h1>我的行程日历</h1>
+  <p class="sub">请输入管理员给你的 6 位数 PIN 码</p>
+  <div class="pin-inputs" id="pinInputs">
+    <input inputmode="numeric" maxlength="1" aria-label="PIN 第 1 位"><input inputmode="numeric" maxlength="1" aria-label="PIN 第 2 位">
+    <input inputmode="numeric" maxlength="1" aria-label="PIN 第 3 位"><input inputmode="numeric" maxlength="1" aria-label="PIN 第 4 位">
+    <input inputmode="numeric" maxlength="1" aria-label="PIN 第 5 位"><input inputmode="numeric" maxlength="1" aria-label="PIN 第 6 位">
+  </div>
+  <p class="gate-error" id="gateError" role="alert"></p>
+</section>
+
+<div class="app hidden" id="app">
+  <header class="top">
+    <div class="who">
+      <span class="avatar" id="avatar">A</span>
+      <div><p class="hello">Hello,</p><h1 id="userName"></h1></div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="themeBtn" type="button" aria-label="更换页面风格" title="更换风格">🎨</button>
+      <button class="icon-btn" id="logoutBtn" type="button" aria-label="登出" title="登出">⏻</button>
+    </div>
+  </header>
+
+  <div class="card next-card hidden" id="nextCard" role="button" tabindex="0">
+    <div class="nc-badge"><b id="ncDay">--</b><small id="ncMon"></small></div>
+    <div class="nc-main">
+      <p class="nc-label">下一场行程 NEXT</p>
+      <p class="nc-title" id="ncTitle"></p>
+      <p class="nc-meta" id="ncMeta"></p>
+    </div>
+    <span class="nc-when" id="ncWhen"></span>
+  </div>
+
+  <main class="layout">
+    <section class="card cal-card" aria-label="日历">
+      <div class="cal-head">
+        <button class="icon-btn" id="prevBtn" type="button" aria-label="上个月">‹</button>
+        <div class="month-title"><span class="m-cn" id="mTitle"></span><span class="m-year" id="mYear"></span></div>
+        <button class="icon-btn" id="nextBtn" type="button" aria-label="下个月">›</button>
+      </div>
+      <div class="cal-sub"><span id="monthStat"></span><button class="chip" id="todayBtn" type="button">回到今天</button></div>
+      <div class="weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+      <div class="days" id="days"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <section class="card day-card" aria-live="polite">
+      <div class="day-head">
+        <p class="day-big" id="dayBig"></p>
+        <div><h2 id="dayTitle"></h2><p class="muted" id="dayCount"></p></div>
+        <button class="btn btn-solid btn-sm" id="addBtn" type="button">＋ 添加</button>
+      </div>
+      <ul class="rec-list" id="recList"></ul>
+    </section>
+  </main>
+
+  <button class="fab" id="fab" type="button" aria-label="添加行程">＋</button>
+</div>
+
+<!-- 添加 / 编辑 行程 -->
+<div class="sheet" id="recSheet" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <form class="panel" id="recForm" role="dialog" aria-labelledby="recSheetTitle" novalidate>
+    <div class="grab"></div>
+    <h3 id="recSheetTitle">添加行程</h3>
+    <div class="field">
+      <label for="fTitle">标题 *</label>
+      <input id="fTitle" maxlength="80" placeholder="例如：曲江庙千秋演出" required>
+    </div>
+    <div class="field">
+      <label for="fDate">日期 *</label>
+      <input id="fDate" type="date" required>
+    </div>
+    <div class="row2">
+      <div class="field"><label for="fStart">开始时间</label><input id="fStart" type="time"></div>
+      <div class="field"><label for="fEnd">结束时间</label><input id="fEnd" type="time"></div>
+    </div>
+    <p class="hint" style="margin:-8px 0 14px">时间不填 = 全天</p>
+    <div class="field">
+      <label for="fLoc">地点</label>
+      <input id="fLoc" maxlength="120" placeholder="例如：Kuil Kwan Imm, Klang">
+    </div>
+    <div class="field">
+      <span class="lbl">分类</span>
+      <div class="cats" id="fCats"></div>
+    </div>
+    <div class="field">
+      <label for="fNotes">备注</label>
+      <textarea id="fNotes" maxlength="1000" placeholder="联络人、电话、歌单、服装、酬劳……"></textarea>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn btn-danger btn-sm hidden" id="delBtn" type="button">删除</button>
+      <button class="btn btn-ghost" type="button" data-close>取消</button>
+      <button class="btn btn-solid" id="saveBtn" type="submit">保存</button>
+    </div>
+  </form>
+</div>
+
+<!-- 风格选择 -->
+<div class="sheet" id="themeSheet" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="panel" role="dialog" aria-labelledby="themeSheetTitle">
+    <div class="grab"></div>
+    <h3 id="themeSheetTitle">🎨 选择你的页面风格</h3>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="sheet-actions"><button class="btn btn-ghost" type="button" data-close>完成</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="../bid/firebase-config.js"></script>
+<script src="../bid/firebase-init.js"></script>
+<script src="cal-common.js"></script>
+<script src="cal.js"></script>
+</body>
+</html>

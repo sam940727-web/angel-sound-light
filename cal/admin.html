@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>歌手行程管理 · Angel Sound &amp; Light</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0d0b09">
+<link rel="icon" type="image/jpeg" href="../logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+SC:wght@500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="cal.css">
+</head>
+<body class="cal-theme-champagne">
+
+<div class="cal-bg" id="calBg" aria-hidden="true"></div>
+
+<section class="gate" id="gate">
+  <img src="../logo.jpg" alt="" class="logo">
+  <p class="eyebrow">Admin</p>
+  <h1>歌手行程管理</h1>
+  <form id="pwForm">
+    <p class="sub">请输入管理员密码</p>
+    <input class="pw-input" id="pw" type="password" autocomplete="current-password" placeholder="管理员密码" aria-label="管理员密码">
+    <div id="pwConfirmBox" class="hidden" style="display:flex;flex-direction:column;align-items:center;gap:14px">
+      <p class="sub">这个密码还没有建立管理员。<br>第一次使用？请再输入一次来建立。</p>
+      <input class="pw-input" id="pw2" type="password" autocomplete="new-password" placeholder="再输入一次密码" aria-label="再输入一次密码">
+    </div>
+    <button class="btn btn-solid" id="pwBtn" type="submit">进入</button>
+    <p class="gate-error" id="gateError" role="alert"></p>
+  </form>
+</section>
+
+<div class="app hidden" id="app">
+  <header class="top">
+    <div class="who">
+      <img src="../logo.jpg" alt="" class="avatar" style="object-fit:cover">
+      <div><p class="hello">Admin</p><h1>歌手行程管理</h1></div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="logoutBtn" type="button" aria-label="登出" title="登出">⏻</button>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button type="button" class="on" data-tab="users" role="tab">👤 歌手</button>
+    <button type="button" data-tab="overview" role="tab">🗓️ 总览日历</button>
+  </div>
+
+  <section id="tabUsers">
+    <p class="adm-note">每位歌手有自己的 PIN 码和页面风格。点「打开日历」可以查看、帮忙添加或修改行程。</p>
+    <div class="adm-grid" id="userGrid"></div>
+  </section>
+
+  <section id="tabOverview" class="hidden">
+    <div class="filters" id="filters"></div>
+    <main class="layout">
+      <section class="card cal-card" aria-label="总览日历">
+        <div class="cal-head">
+          <button class="icon-btn" id="prevBtn" type="button" aria-label="上个月">‹</button>
+          <div class="month-title"><span class="m-cn" id="mTitle"></span><span class="m-year" id="mYear"></span></div>
+          <button class="icon-btn" id="nextBtn" type="button" aria-label="下个月">›</button>
+        </div>
+        <div class="cal-sub"><span id="monthStat"></span><button class="chip" id="todayBtn" type="button">回到今天</button></div>
+        <div class="weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+        <div class="days" id="days"></div>
+        <div class="legend" id="legend"></div>
+      </section>
+      <section class="card day-card" aria-live="polite">
+        <div class="day-head">
+          <p class="day-big" id="dayBig"></p>
+          <div><h2 id="dayTitle"></h2><p class="muted" id="dayCount"></p></div>
+        </div>
+        <ul class="rec-list" id="recList"></ul>
+      </section>
+    </main>
+  </section>
+</div>
+
+<!-- 新增 / 编辑 歌手 -->
+<div class="sheet" id="userSheet" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <form class="panel" id="userForm" role="dialog" aria-labelledby="userSheetTitle" novalidate>
+    <div class="grab"></div>
+    <h3 id="userSheetTitle">新增歌手</h3>
+    <div id="userFields">
+      <div class="field">
+        <label for="uName">歌手名字 *</label>
+        <input id="uName" maxlength="30" placeholder="例如：Amy 林">
+      </div>
+      <div class="field" id="uPinField">
+        <label for="uPin">登录 PIN 码（6 位数）</label>
+        <div class="pin-row">
+          <input id="uPin" inputmode="numeric" maxlength="6" pattern="\d{6}">
+          <button class="icon-btn" id="uPinShuffle" type="button" aria-label="换一个 PIN" title="换一个">↻</button>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">页面风格（歌手之后也可以自己换）</span>
+        <div class="theme-grid" id="uThemes"></div>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn btn-ghost" type="button" data-close>取消</button>
+        <button class="btn btn-solid" id="uSave" type="submit">建立</button>
+      </div>
+    </div>
+    <div id="shareView" class="hidden">
+      <p class="muted" style="margin-bottom:10px">把以下资料发给歌手：</p>
+      <div class="share-box">
+        <p id="shareName" style="font-family:var(--serif-cn);font-weight:600;font-size:1.1rem"></p>
+        <p class="muted" style="margin-top:6px">登录 PIN 码</p>
+        <p class="big-pin" id="sharePin"></p>
+        <p class="muted" style="margin-top:6px">日历网址</p>
+        <p id="shareLink"></p>
+      </div>
+      <div class="sheet-actions">
+        <button class="btn" id="copyBtn" type="button">📋 复制</button>
+        <a class="btn" id="waBtn" target="_blank" rel="noopener">💬 WhatsApp 发送</a>
+        <button class="btn btn-solid" type="button" data-close>完成</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
+<script src="../bid/firebase-config.js"></script>
+<script src="../bid/firebase-init.js"></script>
+<script src="cal-common.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
