@@ -1,17 +1,18 @@
 /* ============================================================
    歌手专属歌单 — 歌手页面的「歌单」分页 (cal/index.html)
    资料：calendars/{pin}/usbs/{id}      { name, order, songs:[{no,t}] }
-        calendars/{pin}/setlists/{id}  { name, date, songs:[{u,n,no,t}] }
+        calendars/{pin}/setlists/{id}  { name, date, songs:[{u,n,no,t,key,ch}] }  key=-4..+4，ch='L'|'R'|''
    ============================================================ */
 (function () {
   'use strict';
   var C = window.Cal;
   var $ = function (id) { return document.getElementById(id); };
+  var KEY_MAX = 4;
 
   var pin = null, started = false;
   var usbs = [], usbLoaded = false;
   var lists = [], listLoaded = false;
-  var sel = [];            // 目前选的歌 [{k,u,n,no,t}]
+  var sel = [];            // 目前选的歌 [{k,u,n,no,t,key,ch}]
   var editingId = null;    // 正在修改的歌单
   var current = null;      // 第 3 步显示中的歌单
   var step = 0;
@@ -201,7 +202,7 @@
     [{ id: 'all', name: '全部' }].concat(usbs).forEach(function (u) {
       var b = el('button', 'chip' + (usbFilter === u.id ? ' on' : ''), u.id === 'all' ? '全部' : u.name + ' · ' + u.songs.length);
       b.type = 'button';
-      b.addEventListener('click', function () { usbFilter = u.id; renderPick(); });
+      b.addEventListener('click', function () { usbFilter = u.id; $('songQ').value = ''; renderPick(); });
       f.appendChild(b);
     });
   }
@@ -278,7 +279,7 @@
     var k = b.dataset.k;
     var i = sel.findIndex(function (s) { return s.k === k; });
     if (i >= 0) sel.splice(i, 1);
-    else sel.push({ k: k, u: b.dataset.u, n: usbName(b.dataset.u, ''), no: Number(b.dataset.no), t: b.dataset.t });
+    else sel.push({ k: k, u: b.dataset.u, n: usbName(b.dataset.u, ''), no: Number(b.dataset.no), t: b.dataset.t, key: 0, ch: '' });
     dirty = true;
     updateSel(true);
   });
@@ -319,13 +320,59 @@
         acts.appendChild(b);
       });
       li.appendChild(acts);
+      var opts = el('div', 'pl-opts');
+      var kw = el('div', 'pl-key');
+      kw.appendChild(el('span', 'pl-lbl', 'Key'));
+      [['kdn', '−', '降调'], ['kval'], ['kup', '+', '升调']].forEach(function (a) {
+        if (a[0] === 'kval') { kw.appendChild(el('b', 'kval')); return; }
+        var b = el('button', a[0], a[1]);
+        b.type = 'button';
+        b.dataset.act = a[0];
+        b.dataset.i = i;
+        b.setAttribute('aria-label', a[2]);
+        kw.appendChild(b);
+      });
+      var cw = el('div', 'pl-ch');
+      ['L', 'R'].forEach(function (c) {
+        var b = el('button', 'ch', c);
+        b.type = 'button';
+        b.dataset.act = 'ch';
+        b.dataset.c = c;
+        b.dataset.i = i;
+        cw.appendChild(b);
+      });
+      opts.append(kw, cw);
+      li.appendChild(opts);
+      paintOpts(li, s);
       ol.appendChild(li);
+    });
+  }
+  function keyLabel(k) { k = Number(k) || 0; return k > 0 ? '+' + k : String(k); }
+  function paintOpts(li, s) {
+    var k = Number(s.key) || 0;
+    var v = li.querySelector('.kval');
+    v.textContent = k ? keyLabel(k) : '原调';
+    v.classList.toggle('on', !!k);
+    li.querySelector('.kdn').disabled = k <= -KEY_MAX;
+    li.querySelector('.kup').disabled = k >= KEY_MAX;
+    li.querySelectorAll('.ch').forEach(function (b) {
+      var on = s.ch === b.dataset.c;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', String(on));
     });
   }
   $('pickList').addEventListener('click', function (e) {
     var b = e.target.closest('button[data-act]');
     if (!b) return;
     var i = Number(b.dataset.i), act = b.dataset.act, j = i;
+    if (act === 'kdn' || act === 'kup' || act === 'ch') {
+      var s = sel[i];
+      if (act === 'ch') s.ch = s.ch === b.dataset.c ? '' : b.dataset.c;
+      else s.key = Math.max(-KEY_MAX, Math.min(KEY_MAX, (Number(s.key) || 0) + (act === 'kup' ? 1 : -1)));
+      dirty = true;
+      paintOpts(b.closest('.pl-item'), s);
+      return;
+    }
     if (act === 'rm') {
       sel.splice(i, 1);
       j = null;
@@ -344,7 +391,7 @@
     var data = {
       name: name,
       date: /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : '',
-      songs: sel.map(function (s) { return { u: s.u, n: s.n, no: s.no, t: s.t }; }),
+      songs: sel.map(function (s) { return { u: s.u, n: s.n, no: s.no, t: s.t, key: Number(s.key) || 0, ch: s.ch || '' }; }),
       updatedAt: Date.now(),
     };
     var btn = this;
@@ -382,7 +429,10 @@
     var meta = [singerName(), dateLabel(l.date)].filter(Boolean).join(' · ');
     if (meta) lines.push(meta);
     lines.push('');
-    (l.songs || []).forEach(function (s, i) { lines.push((i + 1) + '. ' + s.t + ', ' + s.n + ', No.' + s.no); });
+    (l.songs || []).forEach(function (s, i) {
+      var o = [s.key ? 'Key ' + keyLabel(s.key) : '', s.ch || ''].filter(Boolean).join(', ');
+      lines.push((i + 1) + '. ' + s.t + ', ' + s.n + ', No.' + s.no + (o ? ', ' + o : ''));
+    });
     lines.push('', '共 ' + (l.songs || []).length + ' 首');
     return lines.join('\n');
   }
@@ -420,14 +470,6 @@
     while (s.length > 1 && x.measureText(s + '…').width > max) s = s.slice(0, -1);
     return s + '…';
   }
-  function loadImg(src) {
-    return new Promise(function (res) {
-      var i = new Image();
-      i.onload = function () { res(i); };
-      i.onerror = function () { res(null); };
-      i.src = src;
-    });
-  }
   function timeout(p, ms) { return Promise.race([p, new Promise(function (r) { setTimeout(r, ms); })]); }
 
   async function makeImage(l) {
@@ -444,19 +486,19 @@
     var SANS = '"Noto Sans SC","Helvetica Neue","Microsoft YaHei",Arial,sans-serif';
     var EN = '"Cormorant Garamond","Times New Roman",serif';
     var songs = l.songs || [];
-    var all = l.name + singerName() + songs.map(function (s) { return s.t + s.n; }).join('') + '共首天使娱乐机构星期一二三四五六日月';
+    var all = l.name + singerName() + songs.map(function (s) { return s.t + s.n; }).join('') + '共首原调星期一二三四五六日月';
     try {
       await timeout(Promise.all([
         document.fonts.load('700 60px "Noto Serif SC"', all),
         document.fonts.load('600 40px "Noto Serif SC"', all),
         document.fonts.load('400 30px "Noto Sans SC"', all),
-        document.fonts.load('600 40px "Cormorant Garamond"', 'No.0123456789ANGEL SOUND & LIGHT SETLIST'),
+        document.fonts.load('600 40px "Cormorant Garamond"', 'No.0123456789SETLIST'),
       ]), 4000);
     } catch (e) { /* 字体载入失败就用系统字体 */ }
-    var logo = await loadImg('../logo.jpg');
     if (job !== imgJob) return;
 
-    var W = 1080, P = 84, ROW = 104, HEAD = 380, FOOT = 190;
+    var singer = singerName();
+    var W = 1080, P = 84, ROW = 104, HEAD = singer ? 450 : 380, FOOT = 70;
     var H = HEAD + songs.length * ROW + FOOT;
     var cv = document.createElement('canvas');
     cv.width = W; cv.height = H;
@@ -487,21 +529,30 @@
     x.fillText('♪', W - 40, 10);
     x.restore();
 
-    // 标题区
+    // 标题区：歌手名字最大，地方（歌单名称）较小
     x.textBaseline = 'alphabetic';
     x.textAlign = 'left';
     x.fillStyle = col.a;
     x.font = '600 28px ' + EN;
-    if ('letterSpacing' in x) x.letterSpacing = '8px';
-    x.fillText('ANGEL SOUND & LIGHT  ·  SETLIST', P, P + 54);
-    if ('letterSpacing' in x) x.letterSpacing = '2px';
-    x.fillStyle = col.text;
-    x.font = '700 68px ' + SERIF;
-    x.fillText(fit(x, l.name, W - P * 2), P, P + 150);
+    if ('letterSpacing' in x) x.letterSpacing = '10px';
+    x.fillText('SETLIST', P, P + 54);
+    if ('letterSpacing' in x) x.letterSpacing = '4px';
+    var y0 = P + 54;
+    if (singer) {
+      x.fillStyle = col.text;
+      x.font = '700 88px ' + SERIF;
+      x.fillText(fit(x, singer, W - P * 2), P, y0 + 108);
+      y0 += 108;
+    }
+    if ('letterSpacing' in x) x.letterSpacing = '1px';
+    x.fillStyle = singer ? col.a : col.text;
+    x.font = (singer ? '600 40px ' : '700 68px ') + SERIF;
+    x.fillText(fit(x, l.name, W - P * 2), P, y0 + (singer ? 66 : 96));
+    y0 += singer ? 66 : 96;
     if ('letterSpacing' in x) x.letterSpacing = '0px';
     x.fillStyle = col.muted;
-    x.font = '400 32px ' + SANS;
-    x.fillText(fit(x, [singerName(), dateLabel(l.date), '共 ' + songs.length + ' 首'].filter(Boolean).join('   |   '), W - P * 2), P, P + 212);
+    x.font = '400 30px ' + SANS;
+    x.fillText(fit(x, [dateLabel(l.date), '共 ' + songs.length + ' 首'].filter(Boolean).join('   |   '), W - P * 2), P, y0 + 56);
     var lg = x.createLinearGradient(P, 0, W - P, 0);
     lg.addColorStop(0, col.a); lg.addColorStop(1, hexRgba(col.a, 0));
     x.fillStyle = lg;
@@ -533,31 +584,27 @@
       x.textAlign = 'center';
       x.fillText(uTxt, uX + uW / 2, cy + 1);
 
+      // Key / L R 标签（实心，比较醒目）
+      var tags = [];
+      if (s.ch) tags.push(s.ch);
+      if (s.key) tags.push('Key ' + keyLabel(s.key));
+      var edge = uX - 12;
+      x.font = '700 26px ' + SANS;
+      tags.forEach(function (tg) {
+        var tw = x.measureText(tg).width + 26;
+        edge -= tw;
+        x.fillStyle = col.a;
+        rr(x, edge, cy - 21, tw, 42, 21); x.fill();
+        x.fillStyle = col.on;
+        x.fillText(tg, edge + tw / 2, cy + 1);
+        edge -= 10;
+      });
+
       x.textAlign = 'left';
       x.fillStyle = col.text;
       x.font = '600 42px ' + SERIF;
-      x.fillText(fit(x, s.t, uX - 24 - (P + 84)), P + 84, cy + 2);
+      x.fillText(fit(x, s.t, edge - 14 - (P + 84)), P + 84, cy + 2);
     });
-
-    // 页尾
-    x.textBaseline = 'middle';
-    var fy = H - FOOT + 70;
-    x.fillStyle = hexRgba(col.a, 0.35);
-    x.fillRect(P, fy - 60, W - P * 2, 1);
-    var tx = P;
-    if (logo) {
-      x.save(); x.beginPath(); x.arc(P + 34, fy, 34, 0, Math.PI * 2); x.clip();
-      x.drawImage(logo, P, fy - 34, 68, 68); x.restore();
-      x.strokeStyle = col.a; x.lineWidth = 2; x.beginPath(); x.arc(P + 34, fy, 35, 0, Math.PI * 2); x.stroke();
-      tx = P + 90;
-    }
-    x.textAlign = 'left';
-    x.fillStyle = col.text; x.font = '600 30px ' + SERIF;
-    x.fillText('天使娱乐机构', tx, fy - 16);
-    x.fillStyle = col.muted; x.font = '600 24px ' + EN;
-    if ('letterSpacing' in x) x.letterSpacing = '4px';
-    x.fillText('ANGEL SOUND & LIGHT ENTERPRISE', tx, fy + 22);
-    if ('letterSpacing' in x) x.letterSpacing = '0px';
 
     cv.toBlob(function (blob) {
       if (job !== imgJob || !blob) return;
@@ -611,7 +658,7 @@
   });
   $('editList').addEventListener('click', function () {
     if (!current) return;
-    sel = (current.songs || []).map(function (s) { return { k: songKey(s.u, s.no, s.t), u: s.u, n: s.n, no: s.no, t: s.t }; });
+    sel = (current.songs || []).map(function (s) { return { k: songKey(s.u, s.no, s.t), u: s.u, n: s.n, no: s.no, t: s.t, key: Number(s.key) || 0, ch: s.ch || '' }; });
     editingId = current.id;
     $('slName').value = current.name || '';
     $('slDate').value = current.date || '';

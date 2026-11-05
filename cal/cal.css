@@ -564,6 +564,17 @@ h1,h2,h3{font-family:var(--serif-cn);font-weight:600;letter-spacing:.04em}
 .pl-acts button:hover{border-color:var(--accent);color:var(--accent)}
 .pl-acts button.rm:hover{border-color:#e5484d;color:#e5484d}
 .pl-acts button:disabled{opacity:.25;pointer-events:none}
+.pl-item{flex-wrap:wrap}
+.pl-opts{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding-left:44px}
+.pl-key,.pl-ch{display:flex;align-items:center;gap:4px}
+.pl-lbl{font-family:var(--serif-en);font-weight:700;font-size:.85rem;color:var(--muted);margin-right:2px}
+.pl-opts button{min-width:34px;height:32px;padding:0 8px;border-radius:10px;border:1px solid var(--line);color:var(--muted);font-weight:700;transition:all .2s}
+.pl-opts button:hover{border-color:var(--accent);color:var(--accent)}
+.pl-opts button:disabled{opacity:.25;pointer-events:none}
+.pl-opts .kval{min-width:52px;text-align:center;font-weight:700;font-size:1rem;color:var(--muted)}
+.pl-opts .kval.on{color:var(--accent)}
+.pl-opts .ch.on{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--on-accent)}
+@media (max-width:420px){.pl-opts{padding-left:0}}
 
 /* 第 3 步：图片 / 分享 */
 .result-wrap{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
