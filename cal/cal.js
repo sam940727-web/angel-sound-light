@@ -54,6 +54,8 @@
     gate.classList.add('hidden');
     app.classList.remove('hidden');
     onCal(data);
+    window.calSession = { pin: pin, data: data };
+    window.dispatchEvent(new CustomEvent('cal:login', { detail: window.calSession }));
     unsubCal = C.watchCal(pin, function (d) {
       if (!d) {
         C.toast('这个日历已被管理员删除');
@@ -71,6 +73,7 @@
 
   function onCal(d) {
     cal = d;
+    window.calData = d;
     C.applyTheme(d.theme);
     var name = d.name || '歌手';
     $('userName').textContent = name;

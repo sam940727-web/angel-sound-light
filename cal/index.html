@@ -41,6 +41,12 @@
     </div>
   </header>
 
+  <div class="tabs main-tabs" role="tablist">
+    <button type="button" class="on" data-tab="cal" role="tab" aria-selected="true">📅 行程</button>
+    <button type="button" data-tab="songs" role="tab" aria-selected="false">🎵 歌单</button>
+  </div>
+
+  <div id="tabCal">
   <div class="card next-card hidden" id="nextCard" role="button" tabindex="0">
     <div class="nc-badge"><b id="ncDay">--</b><small id="ncMon"></small></div>
     <div class="nc-main">
@@ -75,6 +81,110 @@
   </main>
 
   <button class="fab" id="fab" type="button" aria-label="添加行程">＋</button>
+  </div>
+
+  <!-- ============ 歌单 ============ -->
+  <section id="tabSongs" class="hidden">
+    <div id="vHome">
+      <div class="card s-hero">
+        <div class="s-hero-text">
+          <p class="nc-label">SETLIST</p>
+          <h2>我的歌单</h2>
+          <p class="muted" id="libSummary"></p>
+        </div>
+        <div class="s-hero-actions">
+          <button class="btn btn-ghost btn-sm" id="usbBtn" type="button">🎛️ USB 歌库</button>
+          <button class="btn btn-solid" id="newListBtn" type="button">＋ 新歌单</button>
+        </div>
+      </div>
+      <ul class="sl-list" id="slList"></ul>
+    </div>
+
+    <div id="vFlow" class="hidden">
+      <div class="s-steps">
+        <button class="icon-btn" id="flowBack" type="button" aria-label="返回">‹</button>
+        <ol class="steps" id="steps"><li><i>1</i>选歌</li><li><i>2</i>确认</li><li><i>3</i>分享</li></ol>
+      </div>
+
+      <div id="vPick">
+        <div class="card s-tools">
+          <input class="s-search" id="songQ" type="search" placeholder="🔍 搜索歌名或编号…" aria-label="搜索歌曲" autocomplete="off">
+          <div class="filters" id="usbFilters"></div>
+        </div>
+        <div class="song-grid" id="songGrid"></div>
+        <div class="pick-bar" id="pickBar">
+          <span class="pb-count">已选 <b id="pickCount">0</b> 首</span>
+          <button class="btn btn-ghost btn-sm" id="pickClear" type="button">清空</button>
+          <button class="btn btn-solid" id="pickNext" type="button">下一步 ›</button>
+        </div>
+      </div>
+
+      <div id="vConfirm" class="hidden">
+        <div class="card s-confirm">
+          <div class="row2">
+            <div class="field"><label for="slName">歌单名称</label><input id="slName" maxlength="40" placeholder="例如：曲江庙千秋"></div>
+            <div class="field"><label for="slDate">日期</label><input id="slDate" type="date"></div>
+          </div>
+          <p class="hint">请检查歌曲和顺序是否正确，可用 ↑ ↓ 调整顺序</p>
+          <ol class="pick-list" id="pickList"></ol>
+          <div class="sheet-actions">
+            <button class="btn btn-ghost" id="backPick" type="button">‹ 继续选歌</button>
+            <button class="btn btn-solid" id="saveList" type="button">✓ 确定，生成歌单</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="vResult" class="hidden">
+        <div class="result-wrap">
+          <div class="card img-card"><div class="spinner" id="imgSpin"></div><img id="slImg" alt="歌单图片" class="hidden"></div>
+          <div class="card result-actions">
+            <h3 id="resTitle"></h3>
+            <p class="muted" id="resMeta"></p>
+            <button class="btn btn-solid" id="shareImg" type="button">📤 分享图片</button>
+            <button class="btn" id="saveImg" type="button">💾 保存图片</button>
+            <a class="btn" id="waText" target="_blank" rel="noopener">💬 WhatsApp 发文字</a>
+            <button class="btn" id="copyText" type="button">📋 复制文字</button>
+            <p class="hint">手机也可以长按图片保存</p>
+            <div class="ra-foot">
+              <button class="btn btn-danger btn-sm" id="delList" type="button">删除</button>
+              <button class="btn btn-ghost btn-sm" id="editList" type="button">✏️ 修改歌单</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- USB 歌库 -->
+<div class="sheet" id="usbSheet" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="panel" role="dialog" aria-labelledby="usbSheetTitle">
+    <div class="grab"></div>
+    <h3 id="usbSheetTitle">🎛️ USB 歌库</h3>
+    <div id="usbListView">
+      <p class="muted" style="font-size:.86rem">每个 USB 里的歌曲和编号。歌手和管理员都可以修改。</p>
+      <ul class="usb-list" id="usbList"></ul>
+      <div class="sheet-actions">
+        <button class="btn" id="addUsb" type="button">＋ 新增 USB</button>
+        <button class="btn btn-ghost" type="button" data-close>完成</button>
+      </div>
+    </div>
+    <form id="usbForm" class="hidden" novalidate>
+      <div class="field"><label for="usbName">USB 名称</label><input id="usbName" maxlength="20" placeholder="例如：USB1"></div>
+      <div class="field">
+        <label for="usbSongs">歌曲列表（一行一首）</label>
+        <textarea id="usbSongs" class="usb-text" spellcheck="false" placeholder="1. 月亮代表我的心&#10;2. 甜蜜蜜&#10;3. 童话"></textarea>
+        <p class="hint" id="usbParse"></p>
+      </div>
+      <p class="hint">可以写编号，例如「66. 老鼠爱大米」；没写编号的会自动接着上一首的编号。也可以从 Excel 复制「编号、歌名」两栏直接贴上。</p>
+      <div class="sheet-actions">
+        <button class="btn btn-danger btn-sm" id="usbDel" type="button">删除这个 USB</button>
+        <button class="btn btn-ghost" id="usbCancel" type="button">返回</button>
+        <button class="btn btn-solid" id="usbSave" type="submit">保存</button>
+      </div>
+    </form>
+  </div>
 </div>
 
 <!-- 添加 / 编辑 行程 -->
@@ -136,5 +246,6 @@
 <script src="../bid/firebase-init.js"></script>
 <script src="cal-common.js"></script>
 <script src="cal.js"></script>
+<script src="songs.js"></script>
 </body>
 </html>

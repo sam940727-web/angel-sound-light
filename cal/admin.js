@@ -178,6 +178,13 @@
       open.rel = 'noopener';
       open.textContent = '打开日历';
       acts.appendChild(open);
+      var songs = document.createElement('a');
+      songs.className = 'btn btn-sm';
+      songs.href = 'index.html?pin=' + pin + '#songs';
+      songs.target = '_blank';
+      songs.rel = 'noopener';
+      songs.textContent = '歌单';
+      acts.appendChild(songs);
       [['分享', function () { showShare(pin, name, false); }],
         ['编辑', function () { openUser(pin); }],
         ['删除', function () { removeUser(pin); }]].forEach(function (a, k) {
@@ -305,10 +312,10 @@
 
   async function removeUser(pin) {
     var name = nameOf(pin);
-    if (!confirm('确定要删除「' + name + '」吗？\n这位歌手的所有行程都会一起删除，不能复原。')) return;
+    if (!confirm('确定要删除「' + name + '」吗？\n这位歌手的所有行程和歌单都会一起删除，不能复原。')) return;
     try {
-      var snap = await C.recCol(pin).get();
-      await Promise.all(snap.docs.map(function (d) { return d.ref.delete(); }));
+      var snaps = await Promise.all([C.recCol(pin).get(), C.usbCol(pin).get(), C.setCol(pin).get()]);
+      await Promise.all(snaps.reduce(function (a, s) { return a.concat(s.docs); }, []).map(function (d) { return d.ref.delete(); }));
       await C.calDoc(pin).delete();
       await usersPatch(pin, firebase.firestore.FieldValue.delete());
       C.toast('已删除「' + name + '」');

@@ -445,3 +445,146 @@ h1,h2,h3{font-family:var(--serif-cn);font-weight:600;letter-spacing:.04em}
 
 .adm-grid.settled .u-card{animation:none}
 @media (min-width:900px){.fab{display:none}}
+/* ============ 歌单 ============ */
+.main-tabs{display:flex;width:max-content;max-width:100%}
+.s-hero{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:clamp(18px,3vw,28px);margin-bottom:18px;position:relative;overflow:hidden;animation:fadeUp .5s var(--ease) both;
+}
+.s-hero::after{
+  content:"♪";position:absolute;right:10px;top:-40px;font-size:9rem;line-height:1;color:var(--accent);opacity:.09;
+  pointer-events:none;animation:floaty 6s ease-in-out infinite;
+}
+.s-hero-text{min-width:0}
+.s-hero .nc-label{font-size:.75rem;letter-spacing:.18em;color:var(--accent)}
+.s-hero h2{font-size:clamp(1.4rem,4vw,1.8rem)}
+.s-hero .muted{font-size:.84rem;margin-top:4px}
+.s-hero-actions{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+
+.sl-list{list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.sl-list .empty,.sl-list .spinner{grid-column:1 / -1}
+.sl-card{
+  display:flex;align-items:center;gap:14px;padding:16px 18px;cursor:pointer;
+  animation:fadeUp .5s var(--ease) both;animation-delay:calc(var(--i,0) * 60ms);
+  transition:transform .25s var(--ease),border-color .3s,box-shadow .3s;
+}
+.sl-card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 18px 40px -24px var(--glow)}
+.sl-badge{
+  flex:none;width:58px;height:58px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);line-height:1.05;
+}
+.sl-badge b{font-family:var(--serif-en);font-size:1.55rem}
+.sl-badge small{font-size:.66rem;letter-spacing:.06em}
+.sl-main{flex:1;min-width:0}
+.sl-main h3{font-size:1.02rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-main p{font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sl-go{flex:none;color:var(--accent);font-size:1.5rem;transition:transform .25s var(--ease)}
+.sl-card:hover .sl-go{transform:translateX(4px)}
+
+/* 步骤 */
+.s-steps{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.steps{list-style:none;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow:hidden}
+.steps li{display:flex;align-items:center;gap:6px;font-size:.86rem;color:var(--muted);white-space:nowrap;transition:color .3s}
+.steps li+li::before{content:"";width:clamp(12px,5vw,44px);height:2px;border-radius:2px;background:var(--line);margin-right:2px;transition:background-color .4s}
+.steps i{
+  flex:none;font-style:normal;width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);font-family:var(--serif-en);font-weight:700;font-size:.95rem;transition:all .35s var(--ease);
+}
+.steps li.on{color:var(--text)}
+.steps li.on i{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);border-color:transparent;box-shadow:0 6px 16px -6px var(--glow);transform:scale(1.1)}
+.steps li.done{color:var(--accent)}
+.steps li.done i{border-color:var(--accent);color:var(--accent)}
+.steps li.done+li::before,.steps li.on:not(:first-child)::before{background:var(--accent)}
+
+/* 第 1 步：选歌 */
+.s-tools{padding:14px;margin-bottom:16px;position:sticky;top:10px;z-index:5}
+.s-search{
+  width:100%;padding:12px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);
+  color:var(--text);outline:none;font-size:1rem;transition:border-color .25s,box-shadow .25s;
+}
+.s-search:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow)}
+.s-tools .filters{margin:12px 0 0}
+.sg-group{margin-bottom:20px;animation:fadeUp .4s var(--ease) both}
+.sg-group h4{
+  display:flex;align-items:center;gap:10px;margin:4px 4px 10px;
+  font-family:var(--serif-en);font-size:1.1rem;font-weight:700;letter-spacing:.16em;color:var(--accent);
+}
+.sg-group h4::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+.sg-group h4 small{font-family:var(--sans);letter-spacing:0;font-weight:400;color:var(--muted);font-size:.76rem}
+.sg-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.song{
+  position:relative;display:flex;align-items:center;gap:12px;min-height:54px;padding:10px 12px 10px 14px;border-radius:14px;text-align:left;
+  background:var(--surface);border:1px solid var(--line);backdrop-filter:blur(8px);
+  transition:transform .15s,border-color .25s,background-color .25s,box-shadow .3s;
+}
+.song:hover{border-color:var(--accent)}
+.song:active{transform:scale(.97)}
+.song .s-no{flex:none;min-width:58px;font-family:var(--serif-en);font-size:.8rem;color:var(--muted);transition:color .25s}
+.song .s-no b{font-size:1.25rem;font-weight:700;color:var(--accent);transition:color .25s}
+.song .s-t{flex:1;min-width:0;font-family:var(--serif-cn);font-weight:500;line-height:1.35;word-break:break-word;transition:color .25s}
+.song .s-ord{
+  flex:none;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;
+  font-family:var(--serif-en);font-weight:700;font-size:.95rem;border:1.5px solid var(--line);transition:all .25s var(--ease);
+}
+.song.on{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;box-shadow:0 12px 26px -14px var(--glow)}
+.song.on .s-t,.song.on .s-no,.song.on .s-no b{color:var(--on-accent)}
+.song.on .s-ord{background:var(--on-accent);color:var(--accent);border-color:transparent;animation:pop .4s var(--ease)}
+@keyframes pop{0%{transform:scale(.3)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+
+.pick-bar{
+  position:fixed;left:50%;bottom:clamp(12px,3vw,24px);z-index:20;transform:translateX(-50%);width:min(560px,calc(100% - 24px));
+  display:flex;align-items:center;gap:10px;padding:10px 10px 10px 22px;border-radius:100px;
+  background:var(--tc);border:1px solid var(--accent);
+  box-shadow:0 20px 50px -18px var(--glow),0 10px 30px -10px rgba(0,0,0,.4);animation:barIn .5s var(--ease) both;
+}
+@keyframes barIn{from{opacity:0;transform:translate(-50%,30px)}}
+.pick-bar .pb-count{flex:1;font-size:.92rem;white-space:nowrap}
+.pick-bar b{display:inline-block;font-family:var(--serif-en);font-size:1.5rem;color:var(--accent);margin:0 2px}
+.pick-bar b.bump{animation:pop .35s var(--ease)}
+
+/* 第 2 步：确认 */
+.s-confirm{padding:clamp(18px,3vw,28px);max-width:760px;margin:0 auto;animation:fadeUp .45s var(--ease) both}
+.pick-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.pl-item{
+  display:flex;align-items:center;gap:12px;padding:10px 10px 10px 14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line);
+  animation:fadeUp .4s var(--ease) both;animation-delay:calc(var(--i,0) * 40ms);
+}
+.pl-item.moved{animation:flash .7s var(--ease)}
+@keyframes flash{0%{border-color:var(--accent);box-shadow:0 0 0 4px var(--glow);transform:scale(1.02)}}
+.pl-n{
+  flex:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-style:normal;
+  font-family:var(--serif-en);font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);
+}
+.pl-main{flex:1;min-width:0}
+.pl-main b{display:block;font-family:var(--serif-cn);font-weight:600;line-height:1.35;word-break:break-word}
+.pl-main small{font-size:.8rem;color:var(--muted)}
+.pl-main small em{font-style:normal;font-family:var(--serif-en);font-weight:700;font-size:1rem;color:var(--accent)}
+.pl-acts{display:flex;gap:4px;flex:none}
+.pl-acts button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);color:var(--muted);transition:all .2s}
+.pl-acts button:hover{border-color:var(--accent);color:var(--accent)}
+.pl-acts button.rm:hover{border-color:#e5484d;color:#e5484d}
+.pl-acts button:disabled{opacity:.25;pointer-events:none}
+
+/* 第 3 步：图片 / 分享 */
+.result-wrap{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+@media (min-width:900px){.result-wrap{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}.result-actions{position:sticky;top:20px}}
+.img-card{padding:12px;min-height:220px;display:flex;justify-content:center;align-items:flex-start;animation:fadeUp .5s var(--ease) both}
+.img-card img{width:100%;max-width:560px;height:auto;display:block;border-radius:14px;box-shadow:0 24px 50px -28px rgba(0,0,0,.7);animation:fadeUp .6s var(--ease) both}
+.result-actions{padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:10px;animation:fadeUp .5s .1s var(--ease) both}
+.result-actions h3{font-size:1.3rem;word-break:break-word}
+.result-actions .muted{font-size:.84rem;margin-bottom:6px}
+.result-actions .hint{text-align:center}
+.ra-foot{display:flex;justify-content:space-between;gap:10px;margin-top:6px;padding-top:12px;border-top:1px dashed var(--line)}
+
+/* USB 歌库 */
+.usb-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.usb-list .empty{padding:20px 10px}
+.usb-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line);animation:fadeUp .4s var(--ease) both}
+.usb-row .u-ico{
+  flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));color:var(--on-accent);
+}
+.usb-row div{flex:1;min-width:0}
+.usb-row b{display:block;font-family:var(--serif-cn);font-weight:600}
+.usb-row small{font-size:.78rem;color:var(--muted)}
+.field textarea.usb-text{min-height:260px;font-family:ui-monospace,Consolas,"Noto Sans SC",monospace;font-size:.92rem;line-height:1.65}

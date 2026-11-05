@@ -146,6 +146,7 @@
     if (bg) buildFx(bg, t);
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.content = getComputedStyle(document.body).getPropertyValue('--tc').trim() || '#0d0b09';
+    window.dispatchEvent(new CustomEvent('cal:theme', { detail: t.id }));
     return t;
   }
 
@@ -325,6 +326,8 @@
   function calDoc(pin) { return calCol().doc(pin); }
   function recCol(pin) { return calDoc(pin).collection('records'); }
   function adminDoc(key) { return window.db.collection('calAdmins').doc(key); }
+  function usbCol(pin) { return calDoc(pin).collection('usbs'); }
+  function setCol(pin) { return calDoc(pin).collection('setlists'); }
 
   // 等匿名登录完成后才开始监听；回传的函数可以随时取消
   function lazyWatch(start) {
@@ -456,7 +459,7 @@
     sortRecs: sortRecs, groupByDate: groupByDate, nextUpcoming: nextUpcoming,
     applyTheme: applyTheme, themePreview: themePreview,
     renderGrid: renderGrid, renderLegend: renderLegend, catChips: catChips, recordEl: recordEl,
-    calDoc: calDoc, recCol: recCol, adminDoc: adminDoc,
+    calDoc: calDoc, recCol: recCol, adminDoc: adminDoc, usbCol: usbCol, setCol: setCol, lazyWatch: lazyWatch,
     getCal: getCal, watchCal: watchCal, watchMonth: watchMonth, watchUpcoming: watchUpcoming,
     saveRecord: saveRecord, deleteRecord: deleteRecord, sha256: sha256,
     genPin: genPin, toast: toast, wirePinInputs: wirePinInputs,
