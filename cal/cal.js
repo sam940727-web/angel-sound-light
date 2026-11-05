@@ -29,13 +29,13 @@
   /* ---------------- 登录 ---------------- */
   var pinBox = C.wirePinInputs($('pinInputs'), function (p) { login(p, true); });
 
-  async function login(p, remember) {
+  async function login(p, remember, viaLink) {
     $('gateError').textContent = '';
     try {
       var data = await C.getCal(p);
-      if (!data) {
+      if (!data || data.movedTo) {
         gate.classList.remove('hidden');
-        $('gateError').textContent = '找不到这个 PIN，请向管理员确认。';
+        $('gateError').textContent = data ? '这个 PIN 已经更改，请用新的 PIN 登录。' : '找不到这个 PIN，请向管理员确认。';
         pinBox.shake();
         pinBox.clear();
         if (!remember) localStorage.removeItem(STORE_KEY);
@@ -43,12 +43,94 @@
       }
       pin = p;
       if (remember) localStorage.setItem(STORE_KEY, p);
+      // 管理员用 ?pin= 打开时不要求设定
+      if (data.needPin && !viaLink) { askNewPin(data); return; }
       start(data);
     } catch (e) {
       gate.classList.remove('hidden');
       $('gateError').textContent = '连线失败：' + e.message;
     }
   }
+
+  /* ---------------- 第一次登录：设定自己的 PIN ---------------- */
+  var spGate = $('setPinGate'), spFirst = null, spData = null, spBusy = false;
+  var spBox = C.wirePinInputs($('newPinInputs'), onNewPin);
+  function spStage(first) {
+    spFirst = first;
+    $('spTitle').textContent = first ? '再输入一次确认' : '设定你的 PIN';
+    $('spSub').textContent = first ? '请再输入一次刚才的 6 位数 PIN' : '请设定一个你自己记得的 6 位数 PIN，以后用它登录';
+    $('spBack').classList.toggle('hidden', !first);
+    spBox.clear();
+  }
+  function askNewPin(data) {
+    spData = data;
+    C.applyTheme(data.theme);
+    gate.classList.add('hidden');
+    spGate.classList.remove('hidden');
+    $('spError').textContent = '';
+    spStage(null);
+  }
+  async function onNewPin(p) {
+    if (spBusy) return;
+    var err = $('spError');
+    err.textContent = '';
+    if (!spFirst) {
+      if (/^(\d)\1{5}$/.test(p) || '0123456789'.indexOf(p) >= 0 || '9876543210'.indexOf(p) >= 0) {
+        err.textContent = '这个 PIN 太容易被猜到，请换一个';
+        spBox.shake(); spBox.clear();
+        return;
+      }
+      spStage(p);
+      return;
+    }
+    if (p !== spFirst) {
+      err.textContent = '两次输入的 PIN 不一样，请重新设定';
+      spBox.shake();
+      spStage(null);
+      return;
+    }
+    spBusy = true;
+    $('spSub').textContent = '设定中，请稍候…';
+    try {
+      if (p === pin) {
+        await C.calDoc(pin).update({ needPin: firebase.firestore.FieldValue.delete() });
+        delete spData.needPin;
+      } else {
+        if (await C.getCal(p)) {
+          err.textContent = '这个 PIN 已经有人使用，请换一个';
+          spBox.shake();
+          spStage(null);
+          return;
+        }
+        spData = await C.movePin(pin, p, { patch: { needPin: undefined, pinSetAt: Date.now() }, marker: true });
+        pin = p;
+        localStorage.setItem(STORE_KEY, p);
+      }
+      spGate.classList.add('hidden');
+      C.toast('✓ PIN 已设定为 ' + p + '，请记好', 4000);
+      start(spData);
+    } catch (e) {
+      err.textContent = '设定失败：' + e.message;
+      spStage(null);
+    } finally {
+      spBusy = false;
+    }
+  }
+  $('spBack').addEventListener('click', function () { $('spError').textContent = ''; spStage(null); });
+  $('spKeep').addEventListener('click', async function () {
+    if (spBusy || !confirm('确定保留目前的 PIN 吗？之后可以请管理员帮你更改。')) return;
+    spBusy = true;
+    try {
+      await C.calDoc(pin).update({ needPin: firebase.firestore.FieldValue.delete() });
+      delete spData.needPin;
+      spGate.classList.add('hidden');
+      start(spData);
+    } catch (e) {
+      $('spError').textContent = '连线失败：' + e.message;
+    } finally {
+      spBusy = false;
+    }
+  });
 
   function start(data) {
     gate.classList.add('hidden');
@@ -57,8 +139,8 @@
     window.calSession = { pin: pin, data: data };
     window.dispatchEvent(new CustomEvent('cal:login', { detail: window.calSession }));
     unsubCal = C.watchCal(pin, function (d) {
-      if (!d) {
-        C.toast('这个日历已被管理员删除');
+      if (!d || d.movedTo) {
+        C.toast('这个 PIN 已失效（可能被管理员更改或删除），请向管理员确认');
         setTimeout(logout, 1500);
         return;
       }
@@ -270,9 +352,10 @@
   // 网址带 ?pin= 的（例如管理员打开）不记住；自己输入的会记住在这部手机
   var urlPin = new URLSearchParams(location.search).get('pin');
   var saved = localStorage.getItem(STORE_KEY);
-  var autoPin = urlPin && /^\d{6}$/.test(urlPin) ? urlPin : saved && /^\d{6}$/.test(saved) ? saved : null;
+  var viaLink = !!(urlPin && /^\d{6}$/.test(urlPin));
+  var autoPin = viaLink ? urlPin : saved && /^\d{6}$/.test(saved) ? saved : null;
   if (autoPin) {
     gate.classList.add('hidden');
-    login(autoPin, false);
+    login(autoPin, false, viaLink);
   }
 })();

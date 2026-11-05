@@ -241,7 +241,12 @@
         var no = el('span', 's-no', 'No.');
         no.appendChild(el('b', null, s.no));
         b.append(no, el('span', 's-t', s.t), el('i', 's-ord'));
-        items.appendChild(b);
+        var w = el('div', 'song-w');
+        w.dataset.k = b.dataset.k;
+        var o = buildOpts();
+        o.classList.add('sg-opts');
+        w.append(b, o);
+        items.appendChild(w);
         shown++;
       });
       g.appendChild(items);
@@ -260,11 +265,14 @@
   function updateSel(bump) {
     var idx = {};
     sel.forEach(function (s, i) { idx[s.k] = i + 1; });
-    document.querySelectorAll('#songGrid .song').forEach(function (b) {
+    document.querySelectorAll('#songGrid .song-w').forEach(function (w) {
+      var b = w.querySelector('.song');
       var n = idx[b.dataset.k];
       b.classList.toggle('on', !!n);
+      w.classList.toggle('on', !!n);
       b.setAttribute('aria-pressed', String(!!n));
       b.querySelector('.s-ord').textContent = n || '';
+      if (n) paintOpts(w, sel[n - 1]);
     });
     var c = $('pickCount');
     c.textContent = sel.length;
@@ -274,6 +282,7 @@
   }
 
   $('songGrid').addEventListener('click', function (e) {
+    if (optClick(e)) return;
     var b = e.target.closest('.song');
     if (!b) return;
     var k = b.dataset.k;
@@ -300,6 +309,7 @@
     ol.innerHTML = '';
     sel.forEach(function (s, i) {
       var li = el('li', 'pl-item' + (i === movedIdx ? ' moved' : ''));
+      li.dataset.k = s.k;
       if (movedIdx == null) li.style.setProperty('--i', i);
       else li.style.animationDelay = '0s';
       li.appendChild(el('i', 'pl-n', i + 1));
@@ -320,59 +330,66 @@
         acts.appendChild(b);
       });
       li.appendChild(acts);
-      var opts = el('div', 'pl-opts');
-      var kw = el('div', 'pl-key');
-      kw.appendChild(el('span', 'pl-lbl', 'Key'));
-      [['kdn', '−', '降调'], ['kval'], ['kup', '+', '升调']].forEach(function (a) {
-        if (a[0] === 'kval') { kw.appendChild(el('b', 'kval')); return; }
-        var b = el('button', a[0], a[1]);
-        b.type = 'button';
-        b.dataset.act = a[0];
-        b.dataset.i = i;
-        b.setAttribute('aria-label', a[2]);
-        kw.appendChild(b);
-      });
-      var cw = el('div', 'pl-ch');
-      ['L', 'R'].forEach(function (c) {
-        var b = el('button', 'ch', c);
-        b.type = 'button';
-        b.dataset.act = 'ch';
-        b.dataset.c = c;
-        b.dataset.i = i;
-        cw.appendChild(b);
-      });
-      opts.append(kw, cw);
-      li.appendChild(opts);
+      li.appendChild(buildOpts());
       paintOpts(li, s);
       ol.appendChild(li);
     });
   }
   function keyLabel(k) { k = Number(k) || 0; return k > 0 ? '+' + k : String(k); }
-  function paintOpts(li, s) {
+  // Key −/+ 与 L/R 控件（选歌步骤和确认步骤共用）；所属歌曲由外层 [data-k] 决定
+  function buildOpts() {
+    var opts = el('div', 'pl-opts');
+    var kw = el('div', 'pl-key');
+    kw.appendChild(el('span', 'pl-lbl', 'Key'));
+    [['kdn', '−', '降调'], ['kval'], ['kup', '+', '升调']].forEach(function (a) {
+      if (a[0] === 'kval') { kw.appendChild(el('b', 'kval')); return; }
+      var b = el('button', a[0], a[1]);
+      b.type = 'button';
+      b.dataset.opt = a[0];
+      b.setAttribute('aria-label', a[2]);
+      kw.appendChild(b);
+    });
+    var cw = el('div', 'pl-ch');
+    ['L', 'R'].forEach(function (c) {
+      var b = el('button', 'ch', c);
+      b.type = 'button';
+      b.dataset.opt = 'ch';
+      b.dataset.c = c;
+      cw.appendChild(b);
+    });
+    opts.append(kw, cw);
+    return opts;
+  }
+  function paintOpts(box, s) {
     var k = Number(s.key) || 0;
-    var v = li.querySelector('.kval');
+    var v = box.querySelector('.kval');
     v.textContent = k ? keyLabel(k) : '原调';
     v.classList.toggle('on', !!k);
-    li.querySelector('.kdn').disabled = k <= -KEY_MAX;
-    li.querySelector('.kup').disabled = k >= KEY_MAX;
-    li.querySelectorAll('.ch').forEach(function (b) {
+    box.querySelector('.kdn').disabled = k <= -KEY_MAX;
+    box.querySelector('.kup').disabled = k >= KEY_MAX;
+    box.querySelectorAll('.ch').forEach(function (b) {
       var on = s.ch === b.dataset.c;
       b.classList.toggle('on', on);
       b.setAttribute('aria-pressed', String(on));
     });
   }
+  function optClick(e) {
+    var b = e.target.closest('button[data-opt]');
+    if (!b) return false;
+    var box = b.closest('[data-k]');
+    var s = box && sel.find(function (x) { return x.k === box.dataset.k; });
+    if (!s) return true;
+    if (b.dataset.opt === 'ch') s.ch = s.ch === b.dataset.c ? '' : b.dataset.c;
+    else s.key = Math.max(-KEY_MAX, Math.min(KEY_MAX, (Number(s.key) || 0) + (b.dataset.opt === 'kup' ? 1 : -1)));
+    dirty = true;
+    paintOpts(box, s);
+    return true;
+  }
   $('pickList').addEventListener('click', function (e) {
+    if (optClick(e)) return;
     var b = e.target.closest('button[data-act]');
     if (!b) return;
     var i = Number(b.dataset.i), act = b.dataset.act, j = i;
-    if (act === 'kdn' || act === 'kup' || act === 'ch') {
-      var s = sel[i];
-      if (act === 'ch') s.ch = s.ch === b.dataset.c ? '' : b.dataset.c;
-      else s.key = Math.max(-KEY_MAX, Math.min(KEY_MAX, (Number(s.key) || 0) + (act === 'kup' ? 1 : -1)));
-      dirty = true;
-      paintOpts(b.closest('.pl-item'), s);
-      return;
-    }
     if (act === 'rm') {
       sel.splice(i, 1);
       j = null;

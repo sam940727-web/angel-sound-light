@@ -29,6 +29,21 @@
   <p class="gate-error" id="gateError" role="alert"></p>
 </section>
 
+<section class="gate hidden" id="setPinGate">
+  <img src="../logo.jpg" alt="" class="logo">
+  <p class="eyebrow">Welcome</p>
+  <h1 id="spTitle">设定你的 PIN</h1>
+  <p class="sub" id="spSub">请设定一个你自己记得的 6 位数 PIN，以后用它登录</p>
+  <div class="pin-inputs" id="newPinInputs">
+    <input inputmode="numeric" maxlength="1" aria-label="新 PIN 第 1 位"><input inputmode="numeric" maxlength="1" aria-label="新 PIN 第 2 位">
+    <input inputmode="numeric" maxlength="1" aria-label="新 PIN 第 3 位"><input inputmode="numeric" maxlength="1" aria-label="新 PIN 第 4 位">
+    <input inputmode="numeric" maxlength="1" aria-label="新 PIN 第 5 位"><input inputmode="numeric" maxlength="1" aria-label="新 PIN 第 6 位">
+  </div>
+  <p class="gate-error" id="spError" role="alert"></p>
+  <button class="btn btn-ghost btn-sm hidden" id="spBack" type="button">‹ 重新输入</button>
+  <button class="btn btn-ghost btn-sm" id="spKeep" type="button">先不用，保留目前的 PIN</button>
+</section>
+
 <div class="app hidden" id="app">
   <header class="top">
     <div class="who">
@@ -110,6 +125,7 @@
         <div class="card s-tools">
           <input class="s-search" id="songQ" type="search" placeholder="🔍 搜索歌名或编号…" aria-label="搜索歌曲" autocomplete="off">
           <div class="filters" id="usbFilters"></div>
+          <p class="hint sg-hint">点歌名选歌，选中后可以直接调 Key 和 L / R</p>
         </div>
         <div class="song-grid" id="songGrid"></div>
         <div class="pick-bar" id="pickBar">

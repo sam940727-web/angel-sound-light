@@ -428,6 +428,10 @@ h1,h2,h3{font-family:var(--serif-cn);font-weight:600;letter-spacing:.04em}
 .u-card h3{font-size:1.15rem}
 .u-card .u-meta{font-size:.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px;margin:4px 0 14px}
 .u-card .u-meta b{font-family:var(--serif-en);font-size:1rem;letter-spacing:.14em;color:var(--accent)}
+.u-card .u-meta .u-wait{color:var(--accent)}
+.check-row{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:.9rem;color:var(--text);cursor:pointer}
+.check-row input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+#setPinGate .btn{margin-top:4px}
 .u-card .u-actions{display:flex;flex-wrap:wrap;gap:8px}
 .u-add{
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:220px;border-style:dashed;
@@ -575,6 +579,12 @@ h1,h2,h3{font-family:var(--serif-cn);font-weight:600;letter-spacing:.04em}
 .pl-opts .kval.on{color:var(--accent)}
 .pl-opts .ch.on{background:linear-gradient(135deg,var(--accent),var(--accent-2));border-color:transparent;color:var(--on-accent)}
 @media (max-width:420px){.pl-opts{padding-left:0}}
+.song-w{display:flex;flex-direction:column;min-width:0}
+.song-w .song{width:100%}
+.sg-opts{display:none;padding:8px 4px 4px;gap:8px 12px}
+.song-w.on .sg-opts{display:flex;animation:fadeUp .3s var(--ease) both}
+.sg-opts button{min-width:36px;height:34px}
+.sg-hint{margin:10px 0 0;font-size:.8rem}
 
 /* 第 3 步：图片 / 分享 */
 .result-wrap{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}

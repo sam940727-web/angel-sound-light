@@ -372,6 +372,39 @@
   }
   function deleteRecord(pin, id) { return recCol(pin).doc(id).delete(); }
 
+  async function inBatches(items, fn) {
+    for (var i = 0; i < items.length; i += 400) {
+      var b = window.db.batch();
+      items.slice(i, i + 400).forEach(function (it) { fn(b, it); });
+      await b.commit();
+    }
+  }
+  // 把整个日历（资料 + 行程 + USB + 歌单）搬到新 PIN；先复制完才删除旧的。
+  // opts.patch：要改的资料（值为 undefined 的栏位会被移除）
+  // opts.beforeCleanup：复制完、删除旧资料前执行
+  // opts.marker：旧 PIN 留下 { movedTo } 记号，让管理员页面自动更新
+  async function movePin(oldPin, newPin, opts) {
+    opts = opts || {};
+    await window.authReady;
+    var oldSnap = await calDoc(oldPin).get();
+    var data = Object.assign({}, oldSnap.exists ? oldSnap.data() : {}, opts.patch || {});
+    Object.keys(data).forEach(function (k) { if (data[k] === undefined) delete data[k]; });
+    var cols = [recCol, usbCol, setCol];
+    var snaps = await Promise.all(cols.map(function (c) { return c(oldPin).get(); }));
+
+    await calDoc(newPin).set(data);
+    var writes = [], dels = [];
+    snaps.forEach(function (s, i) {
+      s.docs.forEach(function (d) { writes.push([cols[i](newPin).doc(d.id), d.data()]); dels.push(d.ref); });
+    });
+    await inBatches(writes, function (b, w) { b.set(w[0], w[1]); });
+    if (opts.beforeCleanup) await opts.beforeCleanup(data);
+    await inBatches(dels, function (b, r) { b.delete(r); });
+    if (opts.marker) await calDoc(oldPin).set({ movedTo: newPin, movedAt: Date.now() });
+    else await calDoc(oldPin).delete();
+    return data;
+  }
+
   async function sha256(str) {
     var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
     return Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
@@ -461,7 +494,7 @@
     renderGrid: renderGrid, renderLegend: renderLegend, catChips: catChips, recordEl: recordEl,
     calDoc: calDoc, recCol: recCol, adminDoc: adminDoc, usbCol: usbCol, setCol: setCol, lazyWatch: lazyWatch,
     getCal: getCal, watchCal: watchCal, watchMonth: watchMonth, watchUpcoming: watchUpcoming,
-    saveRecord: saveRecord, deleteRecord: deleteRecord, sha256: sha256,
+    saveRecord: saveRecord, deleteRecord: deleteRecord, sha256: sha256, movePin: movePin,
     genPin: genPin, toast: toast, wirePinInputs: wirePinInputs,
     openSheet: openSheet, closeSheet: closeSheet, wireSheet: wireSheet, wireSwipe: wireSwipe,
   };

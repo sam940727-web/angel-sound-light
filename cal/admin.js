@@ -104,7 +104,11 @@
   function syncSubs() {
     Object.keys(users).forEach(function (pin) {
       if (calSubs[pin]) return;
-      calSubs[pin] = C.watchCal(pin, function (d) { cals[pin] = d; scheduleRender(); }, onErr);
+      calSubs[pin] = C.watchCal(pin, function (d) {
+        if (d && d.movedTo) { adoptMove(pin, d.movedTo); return; }
+        cals[pin] = d;
+        scheduleRender();
+      }, onErr);
       watchMonthFor(pin);
     });
     Object.keys(calSubs).forEach(function (pin) {
@@ -113,6 +117,26 @@
       if (monthSubs[pin]) monthSubs[pin]();
       delete calSubs[pin]; delete monthSubs[pin]; delete cals[pin]; delete monthRecs[pin];
     });
+  }
+
+  // 歌手自己改了 PIN：旧 PIN 会留下 { movedTo }，这里把名单换成新 PIN 并清除记号
+  var adopting = {};
+  async function adoptMove(oldPin, newPin) {
+    if (adopting[oldPin] || !users[oldPin]) return;
+    adopting[oldPin] = true;
+    try {
+      var name = nameOf(oldPin);
+      var u = {};
+      u[newPin] = Object.assign({}, users[oldPin]);
+      u[oldPin] = firebase.firestore.FieldValue.delete();
+      await C.adminDoc(adminKey).set({ users: u }, { merge: true });
+      await C.calDoc(oldPin).delete();
+      C.toast('「' + name + '」已自己设定新 PIN：' + newPin, 4500);
+    } catch (ex) {
+      onErr(ex);
+    } finally {
+      delete adopting[oldPin];
+    }
   }
 
   function scheduleRender() {
@@ -161,6 +185,12 @@
       var th = document.createElement('span');
       th.textContent = '🎨 ' + t.name;
       meta.append(pinSpan, cnt, th);
+      if (d.needPin) {
+        var wait = document.createElement('span');
+        wait.className = 'u-wait';
+        wait.textContent = '⏳ 等待歌手设定 PIN';
+        meta.appendChild(wait);
+      }
       if (cals[pin] === null) {
         var miss = document.createElement('span');
         miss.style.color = '#e5484d';
@@ -229,8 +259,9 @@
     $('userSheetTitle').textContent = pin ? '编辑歌手' : '新增歌手';
     $('uSave').textContent = pin ? '保存' : '建立';
     $('uName').value = pin ? nameOf(pin) : '';
-    $('uPinField').classList.toggle('hidden', !!pin);
-    $('uPin').value = C.genPin();
+    $('uPin').value = pin || C.genPin();
+    $('uPinHint').classList.toggle('hidden', !pin);
+    $('uSelfPin').checked = pin ? !!(cals[pin] && cals[pin].needPin) : true;
     pickTheme(pin && cals[pin] ? C.themeById(cals[pin].theme).id : C.DEFAULT_THEME);
     C.openSheet(userSheet);
     setTimeout(function () { $('uName').focus(); }, 350);
@@ -248,47 +279,78 @@
     e.preventDefault();
     var name = $('uName').value.trim();
     if (!name) { $('uName').focus(); C.toast('请填写歌手名字'); return; }
+    var pin = $('uPin').value;
+    if (!/^\d{6}$/.test(pin)) { $('uPin').focus(); C.toast('PIN 必须是 6 位数字'); return; }
     var btn = $('uSave');
+    var selfPin = $('uSelfPin').checked;
     btn.disabled = true;
     try {
-      if (editingPin) {
-        await C.calDoc(editingPin).update({ name: name, theme: uThemeId });
+      if (editingPin && pin === editingPin) {
+        await C.calDoc(editingPin).update({ name: name, theme: uThemeId, needPin: selfPin ? true : firebase.firestore.FieldValue.delete() });
         await usersPatch(editingPin, { name: name });
         C.toast('✓ 已保存');
         C.closeSheet(userSheet);
         return;
       }
-      var pin = $('uPin').value;
-      if (!/^\d{6}$/.test(pin)) { $('uPin').focus(); C.toast('PIN 必须是 6 位数字'); return; }
       if (await C.getCal(pin)) {
-        $('uPin').value = C.genPin();
-        C.toast('这个 PIN 已经被使用，已帮你换一个');
+        $('uPin').focus();
+        C.toast('PIN ' + pin + ' 已经被使用，请换一个');
+        return;
+      }
+      if (editingPin) {
+        if (!confirm('确定要把「' + name + '」的 PIN 从 ' + editingPin + ' 改成 ' + pin + ' 吗？\n\n行程和歌单会一起搬过去。旧 PIN 会马上失效，歌手需要用新 PIN 重新登录。')) return;
+        btn.textContent = '搬移中…';
+        await changePin(editingPin, pin, name, selfPin);
+        showShare(pin, name, false, selfPin);
+        $('userSheetTitle').textContent = '✓ PIN 已改成 ' + pin;
         return;
       }
       var t = Date.now();
-      await C.calDoc(pin).set({ name: name, theme: uThemeId, createdAt: t });
+      var data = { name: name, theme: uThemeId, createdAt: t };
+      if (selfPin) data.needPin = true;
+      await C.calDoc(pin).set(data);
       await usersPatch(pin, { name: name, createdAt: t });
-      showShare(pin, name, true);
+      showShare(pin, name, true, selfPin);
     } catch (ex) {
       C.toast('保存失败：' + ex.message);
     } finally {
       btn.disabled = false;
+      btn.textContent = editingPin ? '保存' : '建立';
     }
   });
 
-  function shareText(pin, name) {
-    var link = new URL('index.html', location.href).href;
-    return name + ' 你好！这是你的行程日历 📅\n' + link + '\n登录 PIN 码：' + pin;
+  async function changePin(oldPin, newPin, name, selfPin) {
+    adopting[oldPin] = true;
+    try {
+      await C.movePin(oldPin, newPin, {
+        patch: { name: name, theme: uThemeId, needPin: selfPin ? true : undefined },
+        beforeCleanup: function () {
+          var u = {};
+          u[newPin] = Object.assign({}, users[oldPin] || {}, { name: name });
+          u[oldPin] = firebase.firestore.FieldValue.delete();
+          return C.adminDoc(adminKey).set({ users: u }, { merge: true });
+        },
+      });
+    } finally {
+      delete adopting[oldPin];
+    }
   }
 
-  function showShare(pin, name, isNew) {
+  function shareText(pin, name, selfPin) {
+    var link = new URL('index.html', location.href).href;
+    return name + ' 你好！这是你的行程日历 📅\n' + link + '\n登录 PIN 码：' + pin +
+      (selfPin ? '\n（第一次登录后，请设定你自己的 6 位数 PIN）' : '');
+  }
+
+  function showShare(pin, name, isNew, selfPin) {
+    if (selfPin == null) selfPin = !!(cals[pin] && cals[pin].needPin);
     $('userFields').classList.add('hidden');
     $('shareView').classList.remove('hidden');
     $('userSheetTitle').textContent = isNew ? '✓ 已建立「' + name + '」' : '分享给「' + name + '」';
     $('shareName').textContent = name;
     $('sharePin').textContent = pin;
     $('shareLink').textContent = new URL('index.html', location.href).href;
-    var txt = shareText(pin, name);
+    var txt = shareText(pin, name, selfPin);
     $('waBtn').href = 'https://wa.me/?text=' + encodeURIComponent(txt);
     $('copyBtn').onclick = function () { copy(txt); };
     C.openSheet(userSheet);

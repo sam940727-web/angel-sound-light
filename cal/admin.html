@@ -90,11 +90,13 @@
         <input id="uName" maxlength="30" placeholder="例如：Amy 林">
       </div>
       <div class="field" id="uPinField">
-        <label for="uPin">登录 PIN 码（6 位数）</label>
+        <label for="uPin">登录 PIN 码（6 位数，可以自己输入）</label>
         <div class="pin-row">
           <input id="uPin" inputmode="numeric" maxlength="6" pattern="\d{6}">
           <button class="icon-btn" id="uPinShuffle" type="button" aria-label="换一个 PIN" title="换一个">↻</button>
         </div>
+        <p class="hint hidden" id="uPinHint">修改 PIN 后，行程和歌单会一起搬到新 PIN；旧 PIN 会失效，歌手要用新 PIN 重新登录。</p>
+        <label class="check-row"><input type="checkbox" id="uSelfPin"> 让歌手第一次登录时自己设定 PIN</label>
       </div>
       <div class="field">
         <span class="lbl">页面风格（歌手之后也可以自己换）</span>
